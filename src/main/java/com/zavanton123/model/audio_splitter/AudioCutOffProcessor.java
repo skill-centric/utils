@@ -4,11 +4,11 @@ import java.io.File;
 
 public class AudioCutOffProcessor {
 
-    public void processAllAudioFiles(File projectFolder) {
+    public void processAllAudioFiles(File soundsFolder) {
 
         int cutOffDuration = getCutOffDuration();
 
-        File soundsFolder = new File(projectFolder.getAbsolutePath() + "/sounds");
+        File projectFolder = soundsFolder.getParentFile();
         processSoundsFolder(cutOffDuration, soundsFolder, projectFolder);
 
         System.out.println("Success!");
@@ -29,14 +29,15 @@ public class AudioCutOffProcessor {
         for (File file : files) {
 
             if (file.getName().endsWith(".wav")) {
-                processAudio(cutOffDuration, file, projectFolder);
+                processAudio(cutOffDuration, file, soundsFolder, projectFolder);
             }
         }
     }
 
-    private void processAudio(int millesec, File soundFile, File projectFolder) {
+    private void processAudio(int millesec, File soundFile, File soundsFolder, File projectFolder) {
 
-        File targetDir = new File(projectFolder.getAbsolutePath() + "/sounds-cutoff");
+        String resultFolderName = soundsFolder.getName() + "-cutoff";
+        File targetDir = new File(projectFolder.getAbsolutePath(), resultFolderName);
         if (!targetDir.exists()) {
             targetDir.mkdirs();
         }
@@ -61,11 +62,12 @@ public class AudioCutOffProcessor {
             int framesRead = inputWavFile.readFrames(buffer,
                     (int) (inputWavFile.getNumFrames() - frames - (frames / 4)));
             WavFile secondWavFile = WavFile.newWavFile(
-                    new File(targetDir + "/" + "cut-" + soundFile.getName()),
+                    new File(targetDir, soundFile.getName()),
                     inputWavFile.getNumChannels(),
                     framesRead,
                     inputWavFile.getValidBits(),
                     inputWavFile.getSampleRate());
+
 
             // Write the buffer
             secondWavFile.writeFrames(buffer, framesRead);
