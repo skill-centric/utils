@@ -48,11 +48,15 @@ public class MainView extends Application implements MvpView {
         Button joinAudioButton =
                 setupJoinAudioButton(primaryStage, directoryChooser);
 
+        Button cutoffJoinButton =
+                setupCutoffJoinButton(primaryStage, directoryChooser);
+
         Scene scene = setupScene(lessonListButton,
                 numberedLessonListButton,
                 exportVideoButton,
                 cutOffAudioButton,
-                joinAudioButton);
+                joinAudioButton,
+                cutoffJoinButton);
 
         setupPrimaryStage(primaryStage, scene);
     }
@@ -65,6 +69,18 @@ public class MainView extends Application implements MvpView {
             directoryChooser.setTitle("Choose the lesson folder containing sounds directory");
             File lessonFolder = directoryChooser.showDialog(primaryStage);
             presenter.handleJoinAudioFiles(lessonFolder);
+        });
+        return joinAudioButton;
+    }
+
+    private Button setupCutoffJoinButton(Stage primaryStage, DirectoryChooser directoryChooser) {
+        Button joinAudioButton = new Button("Cut Off + Join Audio Files");
+        joinAudioButton.setMinWidth(MIN_BUTTON_WIDTH);
+        joinAudioButton.setMinHeight(MIN_BUTTON_HEIGHT);
+        joinAudioButton.setOnAction(e -> {
+            directoryChooser.setTitle("Choose the sound folder containing sounds directory");
+            File soundFolder = directoryChooser.showDialog(primaryStage);
+            presenter.handleCutoffAndJoinFiles(soundFolder);
         });
         return joinAudioButton;
     }
@@ -127,13 +143,14 @@ public class MainView extends Application implements MvpView {
     private Scene setupScene(Button lessonListButton,
                              Button numberedLessonListButton,
                              Button exportVideoButton, Button cutOffAudioButton,
-                             Button joinAudioButton) {
+                             Button joinAudioButton, Button cutoffJoinButton) {
 
         VBox vBox = new VBox(lessonListButton,
                 numberedLessonListButton,
                 exportVideoButton,
                 cutOffAudioButton,
-                joinAudioButton);
+                joinAudioButton,
+                cutoffJoinButton);
         vBox.setAlignment(Pos.CENTER);
         vBox.setSpacing(VERTICAL_BOX_SPACING);
         return new Scene(vBox, SCENE_WIDTH, SCENE_HEIGHT);

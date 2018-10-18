@@ -75,6 +75,15 @@ public class MainPresenter implements MvpPresenter {
         mvpView.showJoinAudioFilesSuccess();
     }
 
+    @Override
+    public void handleCutoffAndJoinFiles(File soundFolder) {
+
+        handleAudioCutOff(soundFolder);
+
+        File cutoffFolder = new File(soundFolder + "-cutoff");
+        handleJoinAudioFiles(cutoffFolder);
+    }
+
     private void exportVideos(File projectFolder) {
 
         try {
