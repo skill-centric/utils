@@ -56,21 +56,21 @@ public class MainPresenter implements MvpPresenter {
     }
 
     @Override
-    public void handleAudioCutOff(File lessonFolder) {
+    public void handleAudioCutOff(File soundFolder) {
 
         // TODO process null folder
 
         AudioCutOffProcessor audioCutOffProcessor = new AudioCutOffProcessor();
-        audioCutOffProcessor.processAllAudioFiles(lessonFolder);
+        audioCutOffProcessor.processAllAudioFiles(soundFolder);
     }
 
     @Override
-    public void handleJoinAudioFiles(File lessonFolder) {
+    public void handleJoinAudioFiles(File soundsFolder) {
 
         // TODO process null folder
 
         AudioJoiner audioJoiner = new AudioJoiner();
-        audioJoiner.process(lessonFolder);
+        audioJoiner.process(soundsFolder);
 
         mvpView.showJoinAudioFilesSuccess();
     }

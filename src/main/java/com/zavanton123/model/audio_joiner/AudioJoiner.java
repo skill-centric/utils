@@ -1,34 +1,33 @@
 package com.zavanton123.model.audio_joiner;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.SequenceInputStream;
-
 import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
+import java.io.*;
 
 public class AudioJoiner {
 
-    public void process(File lessonFolder) {
+    public void process(File soundsFolder) {
 
         try {
-            File sourceFolder = new File(lessonFolder.getAbsolutePath() + "/sounds");
 
-            File targetFolder = new File(lessonFolder + "/sounds-joined");
+            File targetFolder = new File(soundsFolder.getParent(),
+                    soundsFolder.getName() + "-joined");
+
             if (!targetFolder.exists()) {
                 targetFolder.mkdirs();
             }
 
-            File noiseFile = findNoiseFile(sourceFolder);
+            String noiseFileName = "noise_one_sec.wav";
 
-            File[] files = sourceFolder.listFiles();
+            File[] files = soundsFolder.listFiles();
             for (File file : files) {
 
-                if (file.getName().endsWith(".wav") && !file.equals(noiseFile)) {
+                if (file.getName().endsWith(".wav")) {
 
-                    AudioInputStream noiseClip = AudioSystem.getAudioInputStream(noiseFile);
+                    InputStream inputStream = getClass().getClassLoader().getResourceAsStream(noiseFileName);
+                    AudioInputStream noiseClip = AudioSystem.getAudioInputStream(new BufferedInputStream(inputStream));
                     AudioInputStream audioClip = AudioSystem.getAudioInputStream(file);
 
                     AudioInputStream joinedStream = new AudioInputStream(
@@ -49,7 +48,7 @@ public class AudioJoiner {
         }
     }
 
-    private  File findNoiseFile(File sourceFolder) {
+    private File findNoiseFile(File sourceFolder) {
 
         File[] files = sourceFolder.listFiles();
         for (File file : files) {
