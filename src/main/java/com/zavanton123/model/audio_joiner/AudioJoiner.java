@@ -1,13 +1,10 @@
 package com.zavanton123.model.audio_joiner;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.SequenceInputStream;
-
 import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
+import java.io.*;
 
 public class AudioJoiner {
 
@@ -22,15 +19,15 @@ public class AudioJoiner {
                 targetFolder.mkdirs();
             }
 
-            File noiseFile = new File(getClass().getClassLoader()
-                    .getResource("noise_one_sec.wav").getFile());
+            String noiseFileName = "noise_one_sec.wav";
 
             File[] files = soundsFolder.listFiles();
             for (File file : files) {
 
-                if (file.getName().endsWith(".wav") && !file.equals(noiseFile)) {
+                if (file.getName().endsWith(".wav")) {
 
-                    AudioInputStream noiseClip = AudioSystem.getAudioInputStream(noiseFile);
+                    InputStream inputStream = getClass().getClassLoader().getResourceAsStream(noiseFileName);
+                    AudioInputStream noiseClip = AudioSystem.getAudioInputStream(new BufferedInputStream(inputStream));
                     AudioInputStream audioClip = AudioSystem.getAudioInputStream(file);
 
                     AudioInputStream joinedStream = new AudioInputStream(
@@ -51,7 +48,7 @@ public class AudioJoiner {
         }
     }
 
-    private  File findNoiseFile(File sourceFolder) {
+    private File findNoiseFile(File sourceFolder) {
 
         File[] files = sourceFolder.listFiles();
         for (File file : files) {
