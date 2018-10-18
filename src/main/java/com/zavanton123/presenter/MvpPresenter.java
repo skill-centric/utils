@@ -17,4 +17,6 @@ public interface MvpPresenter {
     void handleAudioCutOff(File lessonFolder);
 
     void handleJoinAudioFiles(File lessonFolder);
+
+    void handleCutoffAndJoinFiles(File soundFolder);
 }
