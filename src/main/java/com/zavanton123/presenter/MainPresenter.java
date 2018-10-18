@@ -65,12 +65,12 @@ public class MainPresenter implements MvpPresenter {
     }
 
     @Override
-    public void handleJoinAudioFiles(File lessonFolder) {
+    public void handleJoinAudioFiles(File soundsFolder) {
 
         // TODO process null folder
 
         AudioJoiner audioJoiner = new AudioJoiner();
-        audioJoiner.process(lessonFolder);
+        audioJoiner.process(soundsFolder);
 
         mvpView.showJoinAudioFilesSuccess();
     }
