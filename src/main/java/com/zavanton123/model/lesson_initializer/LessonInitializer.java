@@ -9,9 +9,9 @@ public class LessonInitializer {
     public void setupLesson(File lessonFolder) {
 
         File wip = createWipFolder(lessonFolder, "WIP");
+
         File noiseFile = createNoiseFile(wip,
-                "noise_5_min.wav",
-                "noise.wav");
+                "noise_5_min.wav");
 
         String lessonName = getLessonName(lessonFolder);
 
@@ -20,7 +20,26 @@ public class LessonInitializer {
         String lessonTemplate = getLessonTemplate(lessonFolder,
                 kdenliveTemplate, "root=\"/home/zavanton/Desktop\"");
 
-        System.out.println(lessonTemplate);
+        storeLessonTemplate(lessonName, lessonFolder, lessonTemplate);
+    }
+
+    private void storeLessonTemplate(String lessonName,
+                                     File lessonFolder,
+                                     String lessonTemplate) {
+
+        File targetFile = new File(lessonFolder, lessonName + " - kdenlive.kdenlive");
+
+        PrintWriter printWriter = null;
+        try {
+            printWriter = new PrintWriter(targetFile);
+            printWriter.write(lessonTemplate);
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            printWriter.close();
+        }
+
     }
 
     private String getLessonTemplate(File lessonFolder,
@@ -64,8 +83,8 @@ public class LessonInitializer {
         return wip;
     }
 
-    private File createNoiseFile(File wip, String resourceName, String fileName) {
-        File noiseFile = new File(wip, fileName);
+    private File createNoiseFile(File wip, String resourceName) {
+        File noiseFile = new File(wip, resourceName);
 
         InputStream inputStream = null;
         BufferedInputStream bufferedInputStream = null;
