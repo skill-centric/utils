@@ -5,6 +5,8 @@ plugins {
 group 'com.zavanton123'
 version '1.3'
 
+def implementationVersion = '1.3.0'
+
 sourceCompatibility = 1.8
 
 repositories {
@@ -17,7 +19,7 @@ jar {
                 'Main-Class': 'com.zavanton123.view.MainView'
         )
         attributes(
-                'Implementation-Version': '1.3.0'
+                'Implementation-Version': "${implementationVersion}"
         )
     }
 
