@@ -17,6 +17,8 @@ jar {
                 'Main-Class': 'com.zavanton123.view.MainView'
         )
     }
+
+    from { (configurations.runtime).collect { it.isDirectory() ? it : zipTree(it) } }
 }
 
 sourceSets {
@@ -29,4 +31,7 @@ sourceSets {
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
+
+    // Apache Commons IO utils
+    compile group: 'commons-io', name: 'commons-io', version: '2.6'
 }
