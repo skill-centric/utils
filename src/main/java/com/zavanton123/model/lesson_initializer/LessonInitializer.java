@@ -11,14 +11,19 @@ public class LessonInitializer {
         File wip = createWipFolder(lessonFolder, "WIP");
 
         File noiseFile = createNoiseFile(wip,
+                "noise_5_min.wav",
                 "noise_5_min.wav");
 
         String lessonName = getLessonName(lessonFolder);
 
         String kdenliveTemplate = readKdenliveTemplate();
 
-        String lessonTemplate = getLessonTemplate(lessonFolder,
-                kdenliveTemplate, "root=\"/home/zavanton/Desktop\"");
+        String lessonTemplate = getLessonTemplate(kdenliveTemplate,
+                "/home/zavanton/Desktop",
+                lessonFolder,
+                "WIP/noise_5_min.wav",
+                noiseFile
+        );
 
         storeLessonTemplate(lessonName, lessonFolder, lessonTemplate);
     }
@@ -42,12 +47,22 @@ public class LessonInitializer {
 
     }
 
-    private String getLessonTemplate(File lessonFolder,
-                                     String kdenliveTemplate, String oldRoot) {
+    private String getLessonTemplate(String kdenliveTemplate,
+                                     String oldRootPath,
+                                     File lessonFolder,
+                                     String oldAudioPath,
+                                     File noiseFile) {
 
+        String oldRoot = "root=\"" + oldRootPath + "\"";
         String targetRoot = "root=\"" + lessonFolder.getAbsolutePath() + "\"";
 
-        return kdenliveTemplate.replace(oldRoot, targetRoot);
+        String oldAudio = "<property name=\"resource\">" + oldAudioPath + "</property>";
+        String targetAudio = "<property name=\"resource\">" + noiseFile.getPath() + "</property>";
+
+        String result = kdenliveTemplate.replace(oldRoot, targetRoot);
+        result = result.replace(oldAudio, targetAudio);
+
+        return result;
     }
 
     private String readKdenliveTemplate() {
@@ -83,8 +98,8 @@ public class LessonInitializer {
         return wip;
     }
 
-    private File createNoiseFile(File wip, String resourceName) {
-        File noiseFile = new File(wip, resourceName);
+    private File createNoiseFile(File wip, String resourceName, String noiseFileName) {
+        File noiseFile = new File(wip, noiseFileName);
 
         InputStream inputStream = null;
         BufferedInputStream bufferedInputStream = null;
