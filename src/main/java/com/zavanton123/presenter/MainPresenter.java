@@ -31,35 +31,35 @@ public class MainPresenter implements MvpPresenter {
     @Override
     public void handlePrintLessonList(File projectFolder) {
 
-        validateFolder(projectFolder);
+        if (!isFolderValid(projectFolder))
+            return;
 
-        if (projectFolder != null)
-            createLessonList(projectFolder);
+        createLessonList(projectFolder);
     }
 
     @Override
     public void handlePrintNumberedLessonList(File projectFolder) {
 
-        validateFolder(projectFolder);
+        if (!isFolderValid(projectFolder))
+            return;
 
-        if (projectFolder != null)
-            createNumberedLessonList(projectFolder);
+        createNumberedLessonList(projectFolder);
     }
 
     @Override
     public void handleExportVideos(File projectFolder) {
 
-        validateFolder(projectFolder);
+        if (!isFolderValid(projectFolder))
+            return;
 
-        if (projectFolder != null) {
-            exportVideos(projectFolder);
-        }
+        exportVideos(projectFolder);
     }
 
     @Override
     public void handleAudioCutOff(File soundFolder) {
 
-        // TODO process null folder
+        if (!isFolderValid(soundFolder))
+            return;
 
         AudioCutOffProcessor audioCutOffProcessor = new AudioCutOffProcessor();
         audioCutOffProcessor.processAllAudioFiles(soundFolder);
@@ -68,7 +68,8 @@ public class MainPresenter implements MvpPresenter {
     @Override
     public void handleJoinAudioFiles(File soundsFolder) {
 
-        // TODO process null folder
+        if (!isFolderValid(soundsFolder))
+            return;
 
         AudioJoiner audioJoiner = new AudioJoiner();
         audioJoiner.process(soundsFolder);
@@ -79,8 +80,10 @@ public class MainPresenter implements MvpPresenter {
     @Override
     public void handleCutoffAndJoinFiles(File soundFolder) {
 
-        handleAudioCutOff(soundFolder);
+        if (!isFolderValid(soundFolder))
+            return;
 
+        handleAudioCutOff(soundFolder);
         File cutoffFolder = new File(soundFolder + "-cutoff");
         handleJoinAudioFiles(cutoffFolder);
     }
@@ -88,11 +91,17 @@ public class MainPresenter implements MvpPresenter {
     @Override
     public void handleSetupLesson(File lessonFolder) {
 
+        if (!isFolderValid(lessonFolder))
+            return;
+
         LessonInitializer lessonInitializer = new LessonInitializer();
         lessonInitializer.setupLesson(lessonFolder);
     }
 
     private void exportVideos(File projectFolder) {
+
+        if(!isFolderValid(projectFolder))
+            return;
 
         try {
             VideoExporter videoExporter = new VideoExporter();
@@ -116,6 +125,9 @@ public class MainPresenter implements MvpPresenter {
 
     private void createNumberedLessonList(File projectFolder) {
 
+        if(!isFolderValid(projectFolder))
+            return;
+
         try {
             NumberedLessonMaker numberedLessonMaker = new NumberedLessonMaker();
             numberedLessonMaker.printNumberedLessons(projectFolder);
@@ -130,6 +142,9 @@ public class MainPresenter implements MvpPresenter {
 
     private void createLessonList(File projectFolder) {
 
+        if(!isFolderValid(projectFolder))
+            return;
+
         try {
             LessonListMaker lessonListMaker = new LessonListMaker();
             lessonListMaker.printContents(projectFolder);
@@ -142,8 +157,13 @@ public class MainPresenter implements MvpPresenter {
         }
     }
 
-    private void validateFolder(File projectFolder) {
-        if (projectFolder == null)
+    private boolean isFolderValid(File folder) {
+
+        if (folder == null) {
             mvpView.showNoFolderSelected();
+            return false;
+        }
+
+        return true;
     }
 }

@@ -5,6 +5,7 @@ import java.io.File;
 public class LessonInitializer {
 
     public void setupLesson(File lessonFolder) {
-        System.out.println("setupLesson is called.");
+
+
     }
 }
