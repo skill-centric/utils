@@ -3,6 +3,7 @@ package com.zavanton123.presenter;
 
 import com.zavanton123.model.audio_joiner.AudioJoiner;
 import com.zavanton123.model.audio_splitter.AudioCutOffProcessor;
+import com.zavanton123.model.lesson_initializer.LessonInitializer;
 import com.zavanton123.model.lesson_list.LessonListMaker;
 import com.zavanton123.model.lesson_list.NumberedLessonMaker;
 import com.zavanton123.model.video.VideoExporter;
@@ -87,7 +88,8 @@ public class MainPresenter implements MvpPresenter {
     @Override
     public void handleSetupLesson(File lessonFolder) {
 
-        // TODO
+        LessonInitializer lessonInitializer = new LessonInitializer();
+        lessonInitializer.setupLesson(lessonFolder);
     }
 
     private void exportVideos(File projectFolder) {
