@@ -21,7 +21,7 @@ public class MainView extends Application implements MvpView {
     public static final int VERTICAL_BOX_SPACING = 25;
     public static final int SCENE_WIDTH = 960;
     public static final int SCENE_HEIGHT = 600;
-    public static final String TITLE = "Skill Centric Utilities 1.0";
+    public static final String TITLE = "Skill Centric Utilities ";
 
     MvpPresenter presenter;
 
@@ -51,14 +51,30 @@ public class MainView extends Application implements MvpView {
         Button cutoffJoinButton =
                 setupCutoffJoinButton(primaryStage, directoryChooser);
 
+        Button lessonSetupButton =
+                setupLessonSetupButton(primaryStage, directoryChooser);
+
         Scene scene = setupScene(lessonListButton,
                 numberedLessonListButton,
                 exportVideoButton,
                 cutOffAudioButton,
                 joinAudioButton,
-                cutoffJoinButton);
+                cutoffJoinButton,
+                lessonSetupButton);
 
         setupPrimaryStage(primaryStage, scene);
+    }
+
+    private Button setupLessonSetupButton(Stage primaryStage, DirectoryChooser directoryChooser) {
+        Button lessonSetupButton = new Button("Setup Lesson");
+        lessonSetupButton.setMinWidth(MIN_BUTTON_WIDTH);
+        lessonSetupButton.setMinHeight(MIN_BUTTON_HEIGHT);
+        lessonSetupButton.setOnAction(e -> {
+            directoryChooser.setTitle("Choose the lesson folder");
+            File lessonFolder = directoryChooser.showDialog(primaryStage);
+            presenter.handleSetupLesson(lessonFolder);
+        });
+        return lessonSetupButton;
     }
 
     private Button setupJoinAudioButton(Stage primaryStage, DirectoryChooser directoryChooser) {
@@ -143,22 +159,29 @@ public class MainView extends Application implements MvpView {
     private Scene setupScene(Button lessonListButton,
                              Button numberedLessonListButton,
                              Button exportVideoButton, Button cutOffAudioButton,
-                             Button joinAudioButton, Button cutoffJoinButton) {
+                             Button joinAudioButton,
+                             Button cutoffJoinButton,
+                             Button lessonSetupButton) {
 
         VBox vBox = new VBox(lessonListButton,
                 numberedLessonListButton,
                 exportVideoButton,
                 cutOffAudioButton,
                 joinAudioButton,
-                cutoffJoinButton);
+                cutoffJoinButton,
+                lessonSetupButton);
+
         vBox.setAlignment(Pos.CENTER);
         vBox.setSpacing(VERTICAL_BOX_SPACING);
         return new Scene(vBox, SCENE_WIDTH, SCENE_HEIGHT);
     }
 
     private void setupPrimaryStage(Stage primaryStage, Scene scene) {
+
+        String version = getClass().getPackage().getImplementationVersion();
+
         primaryStage.setScene(scene);
-        primaryStage.setTitle(TITLE);
+        primaryStage.setTitle(TITLE + version);
         primaryStage.show();
 
         primaryStage.show();
