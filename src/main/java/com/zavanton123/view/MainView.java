@@ -21,7 +21,7 @@ public class MainView extends Application implements MvpView {
     public static final int VERTICAL_BOX_SPACING = 25;
     public static final int SCENE_WIDTH = 960;
     public static final int SCENE_HEIGHT = 600;
-    public static final String TITLE = "Skill Centric Utilities 1.0";
+    public static final String TITLE = "Skill Centric Utilities ";
 
     MvpPresenter presenter;
 
@@ -177,8 +177,11 @@ public class MainView extends Application implements MvpView {
     }
 
     private void setupPrimaryStage(Stage primaryStage, Scene scene) {
+
+        String version = getClass().getPackage().getImplementationVersion();
+
         primaryStage.setScene(scene);
-        primaryStage.setTitle(TITLE);
+        primaryStage.setTitle(TITLE + version);
         primaryStage.show();
 
         primaryStage.show();
