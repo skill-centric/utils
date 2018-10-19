@@ -8,6 +8,10 @@ public class LessonInitializer {
 
     public void setupLesson(File lessonFolder) {
 
+        new Thread(() -> createFoldersAndFiles(lessonFolder)).start();
+    }
+
+    private void createFoldersAndFiles(File lessonFolder) {
         File wip = createWipFolder(lessonFolder, "WIP");
 
         File noiseFile = copyResourceToFolder(wip,
