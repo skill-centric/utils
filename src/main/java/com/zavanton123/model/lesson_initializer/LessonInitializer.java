@@ -1,5 +1,7 @@
 package com.zavanton123.model.lesson_initializer;
 
+import org.apache.commons.io.IOUtils;
+
 import java.io.*;
 
 public class LessonInitializer {
@@ -12,6 +14,35 @@ public class LessonInitializer {
                 "noise.wav");
 
         String lessonName = getLessonName(lessonFolder);
+
+        String result = readKdenliveTemplate();
+
+        System.out.println(result);
+
+    }
+
+    private String readKdenliveTemplate() {
+        InputStream is = getClass().getClassLoader()
+                .getResourceAsStream("template.kdenlive");
+
+        BufferedInputStream bis = new BufferedInputStream(is);
+
+        StringWriter stringWriter = new StringWriter();
+        String encoding = null;
+        String result = null;
+        try {
+            IOUtils.copy(bis, stringWriter, encoding);
+            result = stringWriter.toString();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                bis.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
     }
 
     private File createWipFolder(File lessonFolder, String folderName) {

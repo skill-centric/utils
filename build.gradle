@@ -29,4 +29,7 @@ sourceSets {
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
+
+    // Apache Commons IO utils
+    compile group: 'commons-io', name: 'commons-io', version: '2.6'
 }
