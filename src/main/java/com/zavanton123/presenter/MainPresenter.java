@@ -84,6 +84,12 @@ public class MainPresenter implements MvpPresenter {
         handleJoinAudioFiles(cutoffFolder);
     }
 
+    @Override
+    public void handleSetupLesson(File lessonFolder) {
+
+        // TODO
+    }
+
     private void exportVideos(File projectFolder) {
 
         try {
