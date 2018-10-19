@@ -3,7 +3,9 @@ plugins {
 }
 
 group 'com.zavanton123'
-version '1.2'
+version '1.3'
+
+def implementationVersion = '1.3.0'
 
 sourceCompatibility = 1.8
 
@@ -15,6 +17,9 @@ jar {
     manifest {
         attributes(
                 'Main-Class': 'com.zavanton123.view.MainView'
+        )
+        attributes(
+                'Implementation-Version': "${implementationVersion}"
         )
     }
 
