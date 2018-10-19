@@ -4,7 +4,7 @@
  <producer id="1" out="7908" in="0">
   <property name="length">7909</property>
   <property name="eof">pause</property>
-  <property name="resource">noise_5_min.wav</property>
+  <property name="resource">WIP/noise_5_min.wav</property>
   <property name="meta.media.nb_streams">1</property>
   <property name="meta.media.0.stream.type">audio</property>
   <property name="meta.media.0.codec.sample_fmt">s16</property>

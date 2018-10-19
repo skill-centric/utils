@@ -15,10 +15,20 @@ public class LessonInitializer {
 
         String lessonName = getLessonName(lessonFolder);
 
-        String result = readKdenliveTemplate();
+        String kdenliveTemplate = readKdenliveTemplate();
 
-        System.out.println(result);
+        String lessonTemplate = getLessonTemplate(lessonFolder,
+                kdenliveTemplate, "root=\"/home/zavanton/Desktop\"");
 
+        System.out.println(lessonTemplate);
+    }
+
+    private String getLessonTemplate(File lessonFolder,
+                                     String kdenliveTemplate, String oldRoot) {
+
+        String targetRoot = "root=\"" + lessonFolder.getAbsolutePath() + "\"";
+
+        return kdenliveTemplate.replace(oldRoot, targetRoot);
     }
 
     private String readKdenliveTemplate() {
