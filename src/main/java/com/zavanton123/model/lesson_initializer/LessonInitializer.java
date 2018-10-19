@@ -10,7 +10,7 @@ public class LessonInitializer {
 
         File wip = createWipFolder(lessonFolder, "WIP");
 
-        File noiseFile = createNoiseFile(wip,
+        File noiseFile = copyResourceToFolder(wip,
                 "noise_5_min.wav",
                 "noise_5_min.wav");
 
@@ -26,6 +26,10 @@ public class LessonInitializer {
         );
 
         storeLessonTemplate(lessonName, lessonFolder, lessonTemplate);
+
+        File slidesTemplateFile = copyResourceToFolder(lessonFolder,
+                "slide-template.pptx",
+                lessonName + " - Slides.pptx");
     }
 
     private void storeLessonTemplate(String lessonName,
@@ -44,7 +48,6 @@ public class LessonInitializer {
         } finally {
             printWriter.close();
         }
-
     }
 
     private String getLessonTemplate(String kdenliveTemplate,
@@ -98,8 +101,11 @@ public class LessonInitializer {
         return wip;
     }
 
-    private File createNoiseFile(File wip, String resourceName, String noiseFileName) {
-        File noiseFile = new File(wip, noiseFileName);
+    private File copyResourceToFolder(File targetFolder,
+                                      String resourceName,
+                                      String targetFileName) {
+
+        File noiseFile = new File(targetFolder, targetFileName);
 
         InputStream inputStream = null;
         BufferedInputStream bufferedInputStream = null;
