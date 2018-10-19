@@ -14,6 +14,7 @@ public class LessonInitializer {
                 "noise_5_min.wav",
                 "noise.wav");
 
+        String lessonName = getLessonName(lessonFolder);
     }
 
     private File createWipFolder(File lessonFolder, String folderName) {
@@ -53,5 +54,11 @@ public class LessonInitializer {
             }
         }
         return noiseFile;
+    }
+
+    private String getLessonName(File lessonFolder) {
+        String lessonFolderName = lessonFolder.getName();
+        String[] splitName = lessonFolderName.split(". ", 2);
+        return splitName[1];
     }
 }
