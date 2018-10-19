@@ -1,9 +1,6 @@
 package com.zavanton123.model.lesson_initializer;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 
 public class LessonInitializer {
 
@@ -30,14 +27,17 @@ public class LessonInitializer {
         File noiseFile = new File(wip, fileName);
 
         InputStream inputStream = null;
+        BufferedInputStream bufferedInputStream = null;
         FileOutputStream fileOutputStream = null;
 
         try {
             inputStream = getClass().getClassLoader()
                     .getResourceAsStream(resourceName);
 
-            byte[] buffer = new byte[inputStream.available()];
-            inputStream.read(buffer);
+            bufferedInputStream = new BufferedInputStream(inputStream);
+
+            byte[] buffer = new byte[bufferedInputStream.available()];
+            bufferedInputStream.read(buffer);
 
             fileOutputStream = new FileOutputStream(noiseFile);
             fileOutputStream.write(buffer);
@@ -47,7 +47,7 @@ public class LessonInitializer {
         } finally {
 
             try {
-                inputStream.close();
+                bufferedInputStream.close();
                 fileOutputStream.close();
             } catch (IOException e) {
                 e.printStackTrace();
