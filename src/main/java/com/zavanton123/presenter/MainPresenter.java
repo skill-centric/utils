@@ -98,6 +98,11 @@ public class MainPresenter implements MvpPresenter {
         lessonInitializer.setupLesson(lessonFolder);
     }
 
+    @Override
+    public void handleCreateFoldersFromFile(File courseStructureFile) {
+        System.out.println("handleCreateFoldersFromFile");
+    }
+
     private void exportVideos(File projectFolder) {
 
         if(!isFolderValid(projectFolder))

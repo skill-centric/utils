@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 public class MainView extends Application implements MvpView {
@@ -54,15 +55,35 @@ public class MainView extends Application implements MvpView {
         Button lessonSetupButton =
                 setupLessonSetupButton(primaryStage, directoryChooser);
 
+        Button createFoldersFromFileButton =
+                setupCreateFoldersFromFileButton(primaryStage);
+
         Scene scene = setupScene(lessonListButton,
                 numberedLessonListButton,
                 exportVideoButton,
                 cutOffAudioButton,
                 joinAudioButton,
                 cutoffJoinButton,
-                lessonSetupButton);
+                lessonSetupButton,
+                createFoldersFromFileButton);
 
         setupPrimaryStage(primaryStage, scene);
+    }
+
+    private Button setupCreateFoldersFromFileButton(Stage primaryStage) {
+
+        Button createFoldersFromFileButton = new Button("Create Folders");
+        createFoldersFromFileButton.setMinWidth(MIN_BUTTON_WIDTH);
+        createFoldersFromFileButton.setMinHeight(MIN_BUTTON_HEIGHT);
+        createFoldersFromFileButton.setOnAction(e -> {
+
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Choose the Text File with Course Structure");
+            File courseStructureFile = fileChooser.showOpenDialog(primaryStage);
+
+            presenter.handleCreateFoldersFromFile(courseStructureFile);
+        });
+        return createFoldersFromFileButton;
     }
 
     private Button setupLessonSetupButton(Stage primaryStage, DirectoryChooser directoryChooser) {
@@ -161,7 +182,8 @@ public class MainView extends Application implements MvpView {
                              Button exportVideoButton, Button cutOffAudioButton,
                              Button joinAudioButton,
                              Button cutoffJoinButton,
-                             Button lessonSetupButton) {
+                             Button lessonSetupButton,
+                             Button createFoldersFromFileButton) {
 
         VBox vBox = new VBox(lessonListButton,
                 numberedLessonListButton,
@@ -169,7 +191,8 @@ public class MainView extends Application implements MvpView {
                 cutOffAudioButton,
                 joinAudioButton,
                 cutoffJoinButton,
-                lessonSetupButton);
+                lessonSetupButton,
+                createFoldersFromFileButton);
 
         vBox.setAlignment(Pos.CENTER);
         vBox.setSpacing(VERTICAL_BOX_SPACING);
