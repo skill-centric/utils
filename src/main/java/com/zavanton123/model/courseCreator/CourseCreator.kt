@@ -1,34 +1,23 @@
 package com.zavanton123.model.courseCreator
 
-import java.io.BufferedReader
+import com.zavanton123.model.general.TextFileToStringConverter
 import java.io.File
-import java.io.FileReader
-import java.lang.StringBuilder
 
 class CourseCreator {
 
     fun createFoldersFromFile(courseStructureFile: File) {
 
-        val courseStructure = getCourseStructure(courseStructureFile)
-        println(courseStructure)
+        val converter = TextFileToStringConverter()
+        val courseStructure = converter.convertToString(courseStructureFile)
 
-    }
 
-    private fun getCourseStructure(courseStructureFile: File): String {
-        val reader = FileReader(courseStructureFile)
-
-        val bufferedReader = BufferedReader(reader)
-        var line: String? = bufferedReader.readLine()
-        val builder = StringBuilder()
-
-        while (line != null) {
-
-            builder.append(line)
-            builder.append("\n")
-
-            line = bufferedReader.readLine()
+        val lines = courseStructure.split("\n")
+        for (line in lines) {
+            println(line)
         }
 
-        return builder.toString()
+
     }
+
+
 }
