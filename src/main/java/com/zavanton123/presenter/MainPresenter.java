@@ -3,6 +3,7 @@ package com.zavanton123.presenter;
 
 import com.zavanton123.model.audio_joiner.AudioJoiner;
 import com.zavanton123.model.audio_splitter.AudioCutOffProcessor;
+import com.zavanton123.model.courseCreator.CourseFoldersCreator;
 import com.zavanton123.model.lesson_initializer.LessonInitializer;
 import com.zavanton123.model.lesson_list.LessonListMaker;
 import com.zavanton123.model.lesson_list.NumberedLessonMaker;
@@ -96,6 +97,13 @@ public class MainPresenter implements MvpPresenter {
 
         LessonInitializer lessonInitializer = new LessonInitializer();
         lessonInitializer.setupLesson(lessonFolder);
+    }
+
+    @Override
+    public void handleCreateFoldersFromFile(File courseStructureFile) {
+
+        CourseFoldersCreator courseFoldersCreator = new CourseFoldersCreator();
+        courseFoldersCreator.createFoldersFromFile(courseStructureFile);
     }
 
     private void exportVideos(File projectFolder) {
