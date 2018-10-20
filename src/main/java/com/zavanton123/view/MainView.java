@@ -79,6 +79,7 @@ public class MainView extends Application implements MvpView {
 
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Choose the Text File with Course Structure");
+            fileChooser.setInitialDirectory(new File(DESKTOP));
             File courseStructureFile = fileChooser.showOpenDialog(primaryStage);
 
             presenter.handleCreateFoldersFromFile(courseStructureFile);
