@@ -1,6 +1,5 @@
 package com.zavanton123.presenter;
 
-
 import com.zavanton123.view.MvpView;
 
 import java.io.File;

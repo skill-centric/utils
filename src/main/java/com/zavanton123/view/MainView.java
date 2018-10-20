@@ -1,6 +1,5 @@
 package com.zavanton123.view;
 
-
 import java.io.File;
 
 import com.zavanton123.presenter.MainPresenter;
@@ -43,12 +42,6 @@ public class MainView extends Application implements MvpView {
         Button exportVideoButton =
                 setupExportVideoButton(primaryStage, directoryChooser);
 
-        Button cutOffAudioButton =
-                setupCutOffAudioButton(primaryStage, directoryChooser);
-
-        Button joinAudioButton =
-                setupJoinAudioButton(primaryStage, directoryChooser);
-
         Button cutoffJoinButton =
                 setupCutoffJoinButton(primaryStage, directoryChooser);
 
@@ -61,8 +54,6 @@ public class MainView extends Application implements MvpView {
         Scene scene = setupScene(lessonListButton,
                 numberedLessonListButton,
                 exportVideoButton,
-                cutOffAudioButton,
-                joinAudioButton,
                 cutoffJoinButton,
                 lessonSetupButton,
                 createFoldersFromFileButton);
@@ -180,8 +171,7 @@ public class MainView extends Application implements MvpView {
 
     private Scene setupScene(Button lessonListButton,
                              Button numberedLessonListButton,
-                             Button exportVideoButton, Button cutOffAudioButton,
-                             Button joinAudioButton,
+                             Button exportVideoButton,
                              Button cutoffJoinButton,
                              Button lessonSetupButton,
                              Button createFoldersFromFileButton) {
@@ -189,8 +179,6 @@ public class MainView extends Application implements MvpView {
         VBox vBox = new VBox(lessonListButton,
                 numberedLessonListButton,
                 exportVideoButton,
-                cutOffAudioButton,
-                joinAudioButton,
                 cutoffJoinButton,
                 lessonSetupButton,
                 createFoldersFromFileButton);
