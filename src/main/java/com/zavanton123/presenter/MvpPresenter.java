@@ -1,6 +1,5 @@
 package com.zavanton123.presenter;
 
-
 import com.zavanton123.view.MvpView;
 
 import java.io.File;
@@ -21,4 +20,6 @@ public interface MvpPresenter {
     void handleCutoffAndJoinFiles(File soundFolder);
 
     void handleSetupLesson(File lessonFolder);
+
+    void handleCreateFoldersFromFile(File courseStructureFile);
 }
