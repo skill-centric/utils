@@ -268,4 +268,18 @@ public class MainView extends Application implements MvpView {
         // TODO
         System.out.println("Audio Files Are Joined!");
     }
+
+    @Override
+    public void showNotValidPdfFile() {
+
+        // TODO
+        System.out.println("Not a valid pdf file");
+    }
+
+    @Override
+    public void showPdfToPngConversionSuccess() {
+
+        // TODO
+        System.out.println("Converted PDF to PNG!");
+    }
 }

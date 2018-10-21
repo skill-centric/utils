@@ -1,4 +1,4 @@
-package com.zavanton123.model.pdfConverter
+package com.zavanton123.model.pdf
 
 import java.io.BufferedReader
 import java.io.File
