@@ -1,4 +1,4 @@
-package com.zavanton123.model.lesson_initializer;
+package com.zavanton123.model.lessonInitializer;
 
 import org.apache.commons.io.IOUtils;
 

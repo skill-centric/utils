@@ -1,4 +1,4 @@
-package com.zavanton123.model.audio_splitter;
+package com.zavanton123.model.audioSplitter;
 
 public class WavFileException extends Exception
 {
