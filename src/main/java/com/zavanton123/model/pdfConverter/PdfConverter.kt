@@ -7,26 +7,28 @@ import java.io.InputStreamReader
 
 class PdfConverter {
 
-    fun convert(pdfFile: File) {
+    fun convert(pdfFile: File, targetDir: String, targetName: String) {
 
-        println("Method is called")
+        val source = pdfFile.absolutePath
 
-        val runtime = Runtime.getRuntime()
+        val target = "${pdfFile.parent}/$targetDir/$targetName"
 
-        println(pdfFile.name)
+        val imagesDir = File(pdfFile.parent, targetDir)
+        if(!imagesDir.exists())
+            imagesDir.mkdirs()
 
         val commands = arrayOf("pdftoppm",
-                "/home/zavanton/demo.pdf",
-                "/home/zavanton/img",
+                source,
+                target,
                 "-png",
                 "-r",
                 "300")
 
-        val process = runtime.exec(commands)
-        process.waitFor()
-
         Thread(Runnable {
 
+            val process = Runtime.getRuntime().exec(commands)
+
+            // Show what the pdftoppm app outputs to the console
             val input = BufferedReader(InputStreamReader(process.inputStream))
             var line: String? = input.readLine()
 

@@ -113,7 +113,7 @@ public class MainPresenter implements MvpPresenter {
         // todo validate pdf file
 
         PdfConverter pdfConverter = new PdfConverter();
-        pdfConverter.convert(pdfFile);
+        pdfConverter.convert(pdfFile, "WIP/images", "image");
 
         // todo return pdf conversion success or fail
     }
