@@ -1,4 +1,4 @@
-package com.zavanton123.model.audio_splitter;
+package com.zavanton123.model.audioSplitter;
 
 import java.io.File;
 import java.io.FileInputStream;

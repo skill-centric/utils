@@ -1,4 +1,4 @@
-package com.zavanton123.model.lesson_list;
+package com.zavanton123.model.lessonList;
 
 
 import com.zavanton123.utils.NoLessonsFolderException;
@@ -8,9 +8,9 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.Arrays;
 
-public class NumberedLessonMaker {
+public class LessonListMaker {
 
-    public void printNumberedLessons(File projectFolder) {
+    public void printContents(File projectFolder) {
 
         StringBuilder builder = new StringBuilder();
 
@@ -18,12 +18,11 @@ public class NumberedLessonMaker {
         if (!hasLessonsFolder) {
             throw new NoLessonsFolderException();
         }
+
         File folder = new File(projectFolder.getAbsolutePath() + "/Lessons");
         File[] files = folder.listFiles();
 
         Arrays.sort(files);
-
-        int count = 1;
 
         for (File file : files) {
 
@@ -32,10 +31,8 @@ public class NumberedLessonMaker {
                 builder.append(file.getName());
                 builder.append("\n");
 
-                printDirectory(file, builder, count);
+                printDirectory(file, builder);
             }
-
-            count++;
         }
 
         System.out.println(builder.toString());
@@ -53,7 +50,7 @@ public class NumberedLessonMaker {
         return false;
     }
 
-    private static void printDirectory(File folder, StringBuilder builder, int count) {
+    private void printDirectory(File folder, StringBuilder builder) {
 
         File[] files = folder.listFiles();
 
@@ -65,16 +62,15 @@ public class NumberedLessonMaker {
 
             if (file.isDirectory() && fileName.contains(".")) {
 
-                builder.append(count);
-                builder.append(".");
+                builder.append(" - ");
                 builder.append(fileName);
                 builder.append("\n");
             }
         }
     }
 
-    private static void writeToFile(StringBuilder builder, File projectFolder) {
-        File contentsFile = new File(projectFolder.getAbsolutePath() + "/NumberedLessonList.txt");
+    private void writeToFile(StringBuilder builder, File projectFolder) {
+        File contentsFile = new File(projectFolder.getAbsolutePath() + "/LessonList.txt");
 
         PrintWriter printWriter = null;
         try {

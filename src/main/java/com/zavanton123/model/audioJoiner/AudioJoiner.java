@@ -1,4 +1,4 @@
-package com.zavanton123.model.audio_joiner;
+package com.zavanton123.model.audioJoiner;
 
 import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioInputStream;
