@@ -12,4 +12,8 @@ public interface MvpView {
     void showExportVideoFail();
 
     void showJoinAudioFilesSuccess();
+
+    void showNotValidPdfFile();
+
+    void showPdfToPngConversionSuccess();
 }
