@@ -12,6 +12,7 @@ import com.zavanton123.utils.NoLessonsFolderException;
 import com.zavanton123.view.MvpView;
 
 import java.io.File;
+import java.io.IOException;
 
 public class MainPresenter implements MvpPresenter {
 
