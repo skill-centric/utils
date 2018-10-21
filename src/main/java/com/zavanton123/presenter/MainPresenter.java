@@ -6,6 +6,7 @@ import com.zavanton123.model.courseCreator.CourseFoldersCreator;
 import com.zavanton123.model.lesson_initializer.LessonInitializer;
 import com.zavanton123.model.lesson_list.LessonListMaker;
 import com.zavanton123.model.lesson_list.NumberedLessonMaker;
+import com.zavanton123.model.pdfConverter.PdfConverter;
 import com.zavanton123.model.video.VideoExporter;
 import com.zavanton123.utils.NoLessonsFolderException;
 import com.zavanton123.view.MvpView;
@@ -103,6 +104,17 @@ public class MainPresenter implements MvpPresenter {
 
         CourseFoldersCreator courseFoldersCreator = new CourseFoldersCreator();
         courseFoldersCreator.createFoldersFromFile(courseStructureFile);
+    }
+
+    @Override
+    public void handleConvertPdfToPng(File pdfFile) {
+
+        // todo validate pdf file
+
+        PdfConverter pdfConverter = new PdfConverter();
+        pdfConverter.convert(pdfFile);
+
+        // todo return pdf conversion success or fail
     }
 
     private void exportVideos(File projectFolder) {

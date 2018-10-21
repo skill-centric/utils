@@ -22,4 +22,6 @@ public interface MvpPresenter {
     void handleSetupLesson(File lessonFolder);
 
     void handleCreateFoldersFromFile(File courseStructureFile);
+
+    void handleConvertPdfToPng(File pdfFile);
 }

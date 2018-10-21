@@ -51,14 +51,35 @@ public class MainView extends Application implements MvpView {
         Button createFoldersFromFileButton =
                 setupCreateFoldersFromFileButton(primaryStage);
 
+        Button convertPdfToPngButton =
+                setupConvertPdfToPngButton(primaryStage);
+
         Scene scene = setupScene(lessonListButton,
                 numberedLessonListButton,
                 exportVideoButton,
                 cutoffJoinButton,
                 lessonSetupButton,
-                createFoldersFromFileButton);
+                createFoldersFromFileButton,
+                convertPdfToPngButton);
 
         setupPrimaryStage(primaryStage, scene);
+    }
+
+    private Button setupConvertPdfToPngButton(Stage primaryStage) {
+
+        Button convertPdfToPngButton = new Button("Convert PDF to PNG");
+        convertPdfToPngButton.setMinWidth(MIN_BUTTON_WIDTH);
+        convertPdfToPngButton.setMinHeight(MIN_BUTTON_HEIGHT);
+        convertPdfToPngButton.setOnAction(e -> {
+
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Choose the PDF file");
+            fileChooser.setInitialDirectory(new File(DESKTOP));
+            File pdfFile = fileChooser.showOpenDialog(primaryStage);
+
+            presenter.handleConvertPdfToPng(pdfFile);
+        });
+        return convertPdfToPngButton;
     }
 
     private Button setupCreateFoldersFromFileButton(Stage primaryStage) {
@@ -174,14 +195,16 @@ public class MainView extends Application implements MvpView {
                              Button exportVideoButton,
                              Button cutoffJoinButton,
                              Button lessonSetupButton,
-                             Button createFoldersFromFileButton) {
+                             Button createFoldersFromFileButton,
+                             Button convertPdfToPngButton) {
 
         VBox vBox = new VBox(lessonListButton,
                 numberedLessonListButton,
                 exportVideoButton,
                 cutoffJoinButton,
                 lessonSetupButton,
-                createFoldersFromFileButton);
+                createFoldersFromFileButton,
+                convertPdfToPngButton);
 
         vBox.setAlignment(Pos.CENTER);
         vBox.setSpacing(VERTICAL_BOX_SPACING);
