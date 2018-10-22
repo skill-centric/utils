@@ -6,11 +6,13 @@ import com.zavanton123.model.courseCreator.CourseFoldersCreator;
 import com.zavanton123.model.lessonInitializer.LessonInitializer;
 import com.zavanton123.model.lessonList.LessonListMaker;
 import com.zavanton123.model.lessonList.NumberedLessonMaker;
-import com.zavanton123.model.pdf.PdfConverter;
-import com.zavanton123.model.pdf.PdfValidator;
+import com.zavanton123.model.pdf.PdfFileValidator;
+import com.zavanton123.model.pdf.PdfProcessor;
+import com.zavanton123.model.pdf.SlidesFileValidator;
 import com.zavanton123.model.video.VideoExporter;
 import com.zavanton123.utils.NoLessonsFolderException;
 import com.zavanton123.view.MvpView;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 
@@ -110,21 +112,69 @@ public class MainPresenter implements MvpPresenter {
     @Override
     public void handleConvertPdfToPng(File pdfFile) {
 
-        PdfValidator pdfValidator = new PdfValidator();
-        if (!pdfValidator.isValid(pdfFile)) {
+        PdfFileValidator pdfFileValidator = new PdfFileValidator();
+        if (!pdfFileValidator.isValid(pdfFile)) {
             mvpView.showNotValidPdfFile();
             return;
         }
 
-        PdfConverter pdfConverter = new PdfConverter();
-        pdfConverter.convert(pdfFile, "WIP/images", "image");
+        PdfProcessor pdfProcessor = new PdfProcessor();
+        pdfProcessor.convert(pdfFile, "WIP/images", "image",
+                new PdfProcessor.Callback() {
+                    @Override
+                    public void onSuccess() {
 
-        mvpView.showPdfToPngConversionSuccess();
+                        mvpView.showPdfToPngConversionSuccess();
+                    }
+
+                    @Override
+                    public void onFailure() {
+
+                        mvpView.showPdfToPngConversionFail();
+                    }
+                });
+    }
+
+    @Override
+    public void handleMakePdfAndPng(File slidesFile) {
+
+        SlidesFileValidator slidesFileValidator = new SlidesFileValidator();
+        if (!slidesFileValidator.isValid(slidesFile)) {
+            mvpView.showNotSlidesFile();
+            return;
+        }
+
+        PdfProcessor pdfProcessor = new PdfProcessor();
+        pdfProcessor.createPdf(slidesFile, new PdfProcessor.Callback() {
+            @Override
+            public void onSuccess() {
+
+                mvpView.showCreatePdfSuccess();
+
+                File pdfFile = getPdfFileFromSlidesFileName(slidesFile);
+                handleConvertPdfToPng(pdfFile);
+            }
+
+            @Override
+            public void onFailure() {
+
+                mvpView.showCreatePdfFail();
+            }
+        });
+    }
+
+    @NotNull
+    private File getPdfFileFromSlidesFileName(File slidesFile) {
+        String slidesFileName = slidesFile.getName();
+        String[] split = slidesFileName.split("\\.");
+        String fileName = split[0];
+        String fileNameWithExtension = fileName + ".pdf";
+        return new File(slidesFile.getParent(), fileNameWithExtension);
     }
 
     private void exportVideos(File projectFolder) {
 
-        if(!isFolderValid(projectFolder))
+        if (!isFolderValid(projectFolder))
             return;
 
         try {
@@ -149,7 +199,7 @@ public class MainPresenter implements MvpPresenter {
 
     private void createNumberedLessonList(File projectFolder) {
 
-        if(!isFolderValid(projectFolder))
+        if (!isFolderValid(projectFolder))
             return;
 
         try {
@@ -166,7 +216,7 @@ public class MainPresenter implements MvpPresenter {
 
     private void createLessonList(File projectFolder) {
 
-        if(!isFolderValid(projectFolder))
+        if (!isFolderValid(projectFolder))
             return;
 
         try {

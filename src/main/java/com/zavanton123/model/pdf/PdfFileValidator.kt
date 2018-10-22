@@ -2,7 +2,7 @@ package com.zavanton123.model.pdf
 
 import java.io.File
 
-class PdfValidator {
+class PdfFileValidator {
 
     fun isValid(pdfFile: File): Boolean {
 

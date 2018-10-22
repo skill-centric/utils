@@ -16,4 +16,12 @@ public interface MvpView {
     void showNotValidPdfFile();
 
     void showPdfToPngConversionSuccess();
+
+    void showCreatePdfSuccess();
+
+    void showCreatePdfFail();
+
+    void showNotSlidesFile();
+
+    void showPdfToPngConversionFail();
 }
