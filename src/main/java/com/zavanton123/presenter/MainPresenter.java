@@ -6,7 +6,7 @@ import com.zavanton123.model.courseCreator.CourseFoldersCreator;
 import com.zavanton123.model.lessonInitializer.LessonInitializer;
 import com.zavanton123.model.lessonList.LessonListMaker;
 import com.zavanton123.model.lessonList.NumberedLessonMaker;
-import com.zavanton123.model.pdf.PdfConverter;
+import com.zavanton123.model.pdf.PdfProcessor;
 import com.zavanton123.model.pdf.PdfValidator;
 import com.zavanton123.model.video.VideoExporter;
 import com.zavanton123.utils.NoLessonsFolderException;
@@ -116,16 +116,32 @@ public class MainPresenter implements MvpPresenter {
             return;
         }
 
-        PdfConverter pdfConverter = new PdfConverter();
-        pdfConverter.convert(pdfFile, "WIP/images", "image");
+        PdfProcessor pdfProcessor = new PdfProcessor();
+        pdfProcessor.convert(pdfFile, "WIP/images", "image");
 
         mvpView.showPdfToPngConversionSuccess();
     }
 
     @Override
-    public void handleMakePdfAndPng(File pdfFile) {
+    public void handleMakePdfAndPng(File slidesFile) {
 
+        // todo
+        // validate presentation file
 
+        PdfProcessor pdfProcessor = new PdfProcessor();
+        pdfProcessor.createPdf(slidesFile, new PdfProcessor.Callback() {
+            @Override
+            public void onSuccess() {
+
+                mvpView.showCreatePdfSuccess();
+            }
+
+            @Override
+            public void onFailure() {
+
+                mvpView.showCreatePdfFail();
+            }
+        });
     }
 
     private void exportVideos(File projectFolder) {

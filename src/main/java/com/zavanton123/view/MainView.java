@@ -78,9 +78,9 @@ public class MainView extends Application implements MvpView {
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Choose the presentation file");
             fileChooser.setInitialDirectory(new File(DESKTOP));
-            File pdfFile = fileChooser.showOpenDialog(primaryStage);
+            File slidesFile = fileChooser.showOpenDialog(primaryStage);
 
-            presenter.handleMakePdfAndPng(pdfFile);
+            presenter.handleMakePdfAndPng(slidesFile);
         });
         return makePdfAndPngButton;
     }
@@ -303,5 +303,19 @@ public class MainView extends Application implements MvpView {
 
         // TODO
         System.out.println("Converted PDF to PNG!");
+    }
+
+    @Override
+    public void showCreatePdfSuccess() {
+
+        // TODO
+        System.out.println("PDF is created!");
+    }
+
+    @Override
+    public void showCreatePdfFail() {
+
+        // TODO
+        System.out.println("Failed to create PDF");
     }
 }
