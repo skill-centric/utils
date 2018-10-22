@@ -20,7 +20,7 @@ public class MainView extends Application implements MvpView {
     public static final int MIN_BUTTON_HEIGHT = 50;
     public static final int VERTICAL_BOX_SPACING = 25;
     public static final int SCENE_WIDTH = 960;
-    public static final int SCENE_HEIGHT = 600;
+    public static final int SCENE_HEIGHT = 700;
     public static final String TITLE = "Skill Centric Utilities ";
 
     MvpPresenter presenter;
@@ -54,15 +54,35 @@ public class MainView extends Application implements MvpView {
         Button convertPdfToPngButton =
                 setupConvertPdfToPngButton(primaryStage);
 
+        Button makePdfAndPngButton = setupMakePdfAndPngButton(primaryStage);
+
         Scene scene = setupScene(lessonListButton,
                 numberedLessonListButton,
                 exportVideoButton,
                 cutoffJoinButton,
                 lessonSetupButton,
                 createFoldersFromFileButton,
-                convertPdfToPngButton);
+                convertPdfToPngButton,
+                makePdfAndPngButton);
 
         setupPrimaryStage(primaryStage, scene);
+    }
+
+    private Button setupMakePdfAndPngButton(Stage primaryStage) {
+
+        Button makePdfAndPngButton = new Button("Make PDF and PNG from PPT");
+        makePdfAndPngButton.setMinWidth(MIN_BUTTON_WIDTH);
+        makePdfAndPngButton.setMinHeight(MIN_BUTTON_HEIGHT);
+        makePdfAndPngButton.setOnAction(e -> {
+
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Choose the presentation file");
+            fileChooser.setInitialDirectory(new File(DESKTOP));
+            File pdfFile = fileChooser.showOpenDialog(primaryStage);
+
+            presenter.handleMakePdfAndPng(pdfFile);
+        });
+        return makePdfAndPngButton;
     }
 
     private Button setupConvertPdfToPngButton(Stage primaryStage) {
@@ -196,7 +216,8 @@ public class MainView extends Application implements MvpView {
                              Button cutoffJoinButton,
                              Button lessonSetupButton,
                              Button createFoldersFromFileButton,
-                             Button convertPdfToPngButton) {
+                             Button convertPdfToPngButton,
+                             Button makePdfAndPngButton) {
 
         VBox vBox = new VBox(lessonListButton,
                 numberedLessonListButton,
@@ -204,7 +225,8 @@ public class MainView extends Application implements MvpView {
                 cutoffJoinButton,
                 lessonSetupButton,
                 createFoldersFromFileButton,
-                convertPdfToPngButton);
+                convertPdfToPngButton,
+                makePdfAndPngButton);
 
         vBox.setAlignment(Pos.CENTER);
         vBox.setSpacing(VERTICAL_BOX_SPACING);

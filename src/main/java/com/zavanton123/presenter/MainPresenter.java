@@ -122,6 +122,12 @@ public class MainPresenter implements MvpPresenter {
         mvpView.showPdfToPngConversionSuccess();
     }
 
+    @Override
+    public void handleMakePdfAndPng(File pdfFile) {
+
+
+    }
+
     private void exportVideos(File projectFolder) {
 
         if(!isFolderValid(projectFolder))
