@@ -11,6 +11,7 @@ import com.zavanton123.model.pdf.PdfValidator;
 import com.zavanton123.model.video.VideoExporter;
 import com.zavanton123.utils.NoLessonsFolderException;
 import com.zavanton123.view.MvpView;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 
@@ -134,6 +135,9 @@ public class MainPresenter implements MvpPresenter {
             public void onSuccess() {
 
                 mvpView.showCreatePdfSuccess();
+
+                File pdfFile = getPdfFileFromSlidesFileName(slidesFile);
+                handleConvertPdfToPng(pdfFile);
             }
 
             @Override
@@ -142,6 +146,15 @@ public class MainPresenter implements MvpPresenter {
                 mvpView.showCreatePdfFail();
             }
         });
+    }
+
+    @NotNull
+    private File getPdfFileFromSlidesFileName(File slidesFile) {
+        String slidesFileName = slidesFile.getName();
+        String[] split = slidesFileName.split("\\.");
+        String fileName = split[0];
+        String fileNameWithExtension = fileName + ".pdf";
+        return new File(slidesFile.getParent(), fileNameWithExtension);
     }
 
     private void exportVideos(File projectFolder) {
