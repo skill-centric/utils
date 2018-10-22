@@ -13,14 +13,17 @@ class PdfProcessor {
         fun onFailure()
     }
 
-    fun convert(pdfFile: File, targetDir: String, targetName: String) {
+    fun convert(pdfFile: File,
+                targetDir: String,
+                targetName: String,
+                callback: Callback) {
 
         val source = pdfFile.absolutePath
 
         val target = "${pdfFile.parent}/$targetDir/$targetName"
 
         val imagesDir = File(pdfFile.parent, targetDir)
-        if(!imagesDir.exists())
+        if (!imagesDir.exists())
             imagesDir.mkdirs()
 
         val commands = arrayOf("pdftoppm",
@@ -30,10 +33,10 @@ class PdfProcessor {
                 "-r",
                 "300")
 
-        runCommand(commands, null)
+        runCommand(commands, callback)
     }
 
-    fun createPdf(slidesFile: File, callback: Callback?) {
+    fun createPdf(slidesFile: File, callback: Callback) {
 
         val source = slidesFile.absolutePath
 
@@ -42,28 +45,24 @@ class PdfProcessor {
         runCommand(commands, callback)
     }
 
-    private fun runCommand(commands: Array<String>, callback: Callback?) {
+    private fun runCommand(commands: Array<String>, callback: Callback) {
         Thread(Runnable {
 
             val process = Runtime.getRuntime().exec(commands)
             val status = process.waitFor()
 
-            // Show what the pdftoppm app outputs to the console
-            showAppConsoleOutput(process)
+            // Show what the process outputs to the console
+            showProcessConsoleOutput(process)
 
-            callback?.let{
-
-                if (status == 0) {
-                    it.onSuccess()
-                } else {
-                    it.onFailure()
-                }
+            when(status){
+                0 -> callback.onSuccess()
+                else -> callback.onFailure()
             }
 
         }).start()
     }
 
-    private fun showAppConsoleOutput(process: Process) {
+    private fun showProcessConsoleOutput(process: Process) {
         val input = BufferedReader(InputStreamReader(process.inputStream))
         var line: String? = input.readLine()
 

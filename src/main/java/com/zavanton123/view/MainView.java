@@ -325,4 +325,11 @@ public class MainView extends Application implements MvpView {
         // TODO
         System.out.println("Not a Presentation File");
     }
+
+    @Override
+    public void showPdfToPngConversionFail() {
+
+        // TODO
+        System.out.println("Failed to Convert PDF to PNG");
+    }
 }

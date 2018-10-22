@@ -6,8 +6,8 @@ import com.zavanton123.model.courseCreator.CourseFoldersCreator;
 import com.zavanton123.model.lessonInitializer.LessonInitializer;
 import com.zavanton123.model.lessonList.LessonListMaker;
 import com.zavanton123.model.lessonList.NumberedLessonMaker;
-import com.zavanton123.model.pdf.PdfProcessor;
 import com.zavanton123.model.pdf.PdfFileValidator;
+import com.zavanton123.model.pdf.PdfProcessor;
 import com.zavanton123.model.pdf.SlidesFileValidator;
 import com.zavanton123.model.video.VideoExporter;
 import com.zavanton123.utils.NoLessonsFolderException;
@@ -119,9 +119,20 @@ public class MainPresenter implements MvpPresenter {
         }
 
         PdfProcessor pdfProcessor = new PdfProcessor();
-        pdfProcessor.convert(pdfFile, "WIP/images", "image");
+        pdfProcessor.convert(pdfFile, "WIP/images", "image",
+                new PdfProcessor.Callback() {
+                    @Override
+                    public void onSuccess() {
 
-        mvpView.showPdfToPngConversionSuccess();
+                        mvpView.showPdfToPngConversionSuccess();
+                    }
+
+                    @Override
+                    public void onFailure() {
+
+                        mvpView.showPdfToPngConversionFail();
+                    }
+                });
     }
 
     @Override
@@ -163,7 +174,7 @@ public class MainPresenter implements MvpPresenter {
 
     private void exportVideos(File projectFolder) {
 
-        if(!isFolderValid(projectFolder))
+        if (!isFolderValid(projectFolder))
             return;
 
         try {
@@ -188,7 +199,7 @@ public class MainPresenter implements MvpPresenter {
 
     private void createNumberedLessonList(File projectFolder) {
 
-        if(!isFolderValid(projectFolder))
+        if (!isFolderValid(projectFolder))
             return;
 
         try {
@@ -205,7 +216,7 @@ public class MainPresenter implements MvpPresenter {
 
     private void createLessonList(File projectFolder) {
 
-        if(!isFolderValid(projectFolder))
+        if (!isFolderValid(projectFolder))
             return;
 
         try {
