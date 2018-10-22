@@ -20,4 +20,6 @@ public interface MvpView {
     void showCreatePdfSuccess();
 
     void showCreatePdfFail();
+
+    void showNotSlidesFile();
 }

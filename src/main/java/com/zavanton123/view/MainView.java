@@ -318,4 +318,11 @@ public class MainView extends Application implements MvpView {
         // TODO
         System.out.println("Failed to create PDF");
     }
+
+    @Override
+    public void showNotSlidesFile() {
+
+        // TODO
+        System.out.println("Not a Presentation File");
+    }
 }

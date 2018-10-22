@@ -7,7 +7,8 @@ import com.zavanton123.model.lessonInitializer.LessonInitializer;
 import com.zavanton123.model.lessonList.LessonListMaker;
 import com.zavanton123.model.lessonList.NumberedLessonMaker;
 import com.zavanton123.model.pdf.PdfProcessor;
-import com.zavanton123.model.pdf.PdfValidator;
+import com.zavanton123.model.pdf.PdfFileValidator;
+import com.zavanton123.model.pdf.SlidesFileValidator;
 import com.zavanton123.model.video.VideoExporter;
 import com.zavanton123.utils.NoLessonsFolderException;
 import com.zavanton123.view.MvpView;
@@ -111,8 +112,8 @@ public class MainPresenter implements MvpPresenter {
     @Override
     public void handleConvertPdfToPng(File pdfFile) {
 
-        PdfValidator pdfValidator = new PdfValidator();
-        if (!pdfValidator.isValid(pdfFile)) {
+        PdfFileValidator pdfFileValidator = new PdfFileValidator();
+        if (!pdfFileValidator.isValid(pdfFile)) {
             mvpView.showNotValidPdfFile();
             return;
         }
@@ -126,8 +127,11 @@ public class MainPresenter implements MvpPresenter {
     @Override
     public void handleMakePdfAndPng(File slidesFile) {
 
-        // todo
-        // validate presentation file
+        SlidesFileValidator slidesFileValidator = new SlidesFileValidator();
+        if (!slidesFileValidator.isValid(slidesFile)) {
+            mvpView.showNotSlidesFile();
+            return;
+        }
 
         PdfProcessor pdfProcessor = new PdfProcessor();
         pdfProcessor.createPdf(slidesFile, new PdfProcessor.Callback() {
