@@ -91,9 +91,9 @@ public class VideoExporter {
             if (lessonFolder.isDirectory()) {
 
                 processLessonFolder(lessonFolder, sectionCount, lessonCount, videoFolder);
-            }
 
-            lessonCount++;
+                lessonCount++;
+            }
         }
     }
 
