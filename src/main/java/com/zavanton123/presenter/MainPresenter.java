@@ -3,6 +3,7 @@ package com.zavanton123.presenter;
 import com.zavanton123.model.audioJoiner.AudioJoiner;
 import com.zavanton123.model.audioSplitter.AudioCutOffProcessor;
 import com.zavanton123.model.courseCreator.CourseFoldersCreator;
+import com.zavanton123.model.folder.AssetsExporter;
 import com.zavanton123.model.lessonInitializer.LessonInitializer;
 import com.zavanton123.model.lessonList.LessonListMaker;
 import com.zavanton123.model.lessonList.NumberedLessonMaker;
@@ -170,40 +171,8 @@ public class MainPresenter implements MvpPresenter {
     @Override
     public void handleExportSlidesButton(File lessonsFolder) {
 
-        File courseFolder = lessonsFolder.getParentFile();
-        File targetFolder = new File(courseFolder, "Slides");
-        if (!targetFolder.exists()) {
-            targetFolder.mkdirs();
-        }
-
-        String extension = ".pdf";
-
-        LessonWalker lessonWalker = new LessonWalker();
-        lessonWalker.walkTree(lessonsFolder, lessonFolder -> {
-
-            int parentOrderNumber = lessonFolder.getParentOrderNumber();
-            int orderNumber = lessonFolder.getOrderNumber();
-
-            File folder = lessonFolder.getFolder();
-            List<File> files = Arrays.asList(folder.listFiles());
-            for (File file : files) {
-
-                if (file.getName().endsWith(extension)) {
-
-                    String targetName = parentOrderNumber + "."
-                            + orderNumber + " "
-                            + file.getName();
-
-                    File targetFile = new File(targetFolder, targetName);
-
-                    // todo export file to target
-                    System.out.println("Copy file " + file.getName()
-                            + " to " + targetFile.getAbsolutePath());
-                }
-            }
-
-            return Unit.INSTANCE;
-        });
+        AssetsExporter assetsExporter = new AssetsExporter();
+        assetsExporter.export(lessonsFolder, ".pdf", "Slides");
     }
 
     @NotNull
