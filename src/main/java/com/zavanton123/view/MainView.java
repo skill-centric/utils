@@ -56,6 +56,8 @@ public class MainView extends Application implements MvpView {
 
         Button makePdfAndPngButton = setupMakePdfAndPngButton(primaryStage);
 
+        Button exportSlidesButton = setupExportSlidesButton(primaryStage, directoryChooser);
+
         Scene scene = setupScene(lessonListButton,
                 numberedLessonListButton,
                 exportVideoButton,
@@ -63,9 +65,23 @@ public class MainView extends Application implements MvpView {
                 lessonSetupButton,
                 createFoldersFromFileButton,
                 convertPdfToPngButton,
-                makePdfAndPngButton);
+                makePdfAndPngButton,
+                exportSlidesButton);
 
         setupPrimaryStage(primaryStage, scene);
+    }
+
+    private Button setupExportSlidesButton(Stage primaryStage, DirectoryChooser directoryChooser) {
+
+        Button exportSlidesButton = new Button("Export Slides");
+        exportSlidesButton.setMinWidth(MIN_BUTTON_WIDTH);
+        exportSlidesButton.setMinHeight(MIN_BUTTON_HEIGHT);
+        exportSlidesButton.setOnAction(e -> {
+            directoryChooser.setTitle("Choose the lesson folder");
+            File lessonFolder = directoryChooser.showDialog(primaryStage);
+            presenter.handleExportSlidesButton(lessonFolder);
+        });
+        return exportSlidesButton;
     }
 
     private Button setupMakePdfAndPngButton(Stage primaryStage) {
@@ -217,7 +233,8 @@ public class MainView extends Application implements MvpView {
                              Button lessonSetupButton,
                              Button createFoldersFromFileButton,
                              Button convertPdfToPngButton,
-                             Button makePdfAndPngButton) {
+                             Button makePdfAndPngButton,
+                             Button exportSlidesButton) {
 
         VBox vBox = new VBox(lessonListButton,
                 numberedLessonListButton,
@@ -226,7 +243,8 @@ public class MainView extends Application implements MvpView {
                 lessonSetupButton,
                 createFoldersFromFileButton,
                 convertPdfToPngButton,
-                makePdfAndPngButton);
+                makePdfAndPngButton,
+                exportSlidesButton);
 
         vBox.setAlignment(Pos.CENTER);
         vBox.setSpacing(VERTICAL_BOX_SPACING);

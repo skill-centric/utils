@@ -9,9 +9,12 @@ import com.zavanton123.model.lessonList.NumberedLessonMaker;
 import com.zavanton123.model.pdf.PdfFileValidator;
 import com.zavanton123.model.pdf.PdfProcessor;
 import com.zavanton123.model.pdf.SlidesFileValidator;
+import com.zavanton123.model.treewalker.TreeWalker;
 import com.zavanton123.model.video.VideoExporter;
 import com.zavanton123.utils.NoLessonsFolderException;
 import com.zavanton123.view.MvpView;
+import kotlin.Unit;
+import kotlin.jvm.functions.Function0;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -160,6 +163,16 @@ public class MainPresenter implements MvpPresenter {
 
                 mvpView.showCreatePdfFail();
             }
+        });
+    }
+
+    @Override
+    public void handleExportSlidesButton(File lessonFolder) {
+
+        TreeWalker treeWalker = new TreeWalker();
+        treeWalker.walkTree(lessonFolder, () -> {
+            // todo
+            return null;
         });
     }
 
