@@ -56,7 +56,7 @@ public class MainView extends Application implements MvpView {
 
         Button makePdfAndPngButton = setupMakePdfAndPngButton(primaryStage);
 
-        Button exportSlidesButton = setupExportSlidesButton(primaryStage, directoryChooser);
+        Button exportSlidesButton = setupExportAssetsButton(primaryStage, directoryChooser);
 
         Scene scene = setupScene(lessonListButton,
                 numberedLessonListButton,
@@ -71,17 +71,17 @@ public class MainView extends Application implements MvpView {
         setupPrimaryStage(primaryStage, scene);
     }
 
-    private Button setupExportSlidesButton(Stage primaryStage, DirectoryChooser directoryChooser) {
+    private Button setupExportAssetsButton(Stage primaryStage, DirectoryChooser directoryChooser) {
 
-        Button exportSlidesButton = new Button("Export Slides");
-        exportSlidesButton.setMinWidth(MIN_BUTTON_WIDTH);
-        exportSlidesButton.setMinHeight(MIN_BUTTON_HEIGHT);
-        exportSlidesButton.setOnAction(e -> {
+        Button exportAssetsButton = new Button("Export Assets");
+        exportAssetsButton.setMinWidth(MIN_BUTTON_WIDTH);
+        exportAssetsButton.setMinHeight(MIN_BUTTON_HEIGHT);
+        exportAssetsButton.setOnAction(e -> {
             directoryChooser.setTitle("Choose the lesson folder");
             File lessonFolder = directoryChooser.showDialog(primaryStage);
             presenter.handleExportSlidesButton(lessonFolder);
         });
-        return exportSlidesButton;
+        return exportAssetsButton;
     }
 
     private Button setupMakePdfAndPngButton(Stage primaryStage) {

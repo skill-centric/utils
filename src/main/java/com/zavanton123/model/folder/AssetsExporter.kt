@@ -20,10 +20,15 @@ class AssetsExporter(private val fileCloner: FileCloner = FileCloner()) {
                                     extension: String,
                                     targetFolder: File) {
 
-        val lessonFiles = Arrays.asList(*lessonFolder.folder.listFiles()!!)
-        for (lessonFile in lessonFiles) {
+        println("Called processLessonFolder")
 
-            processLessonFile(lessonFile, extension, lessonFolder, targetFolder)
+        if(lessonFolder.folder.isDirectory){
+
+            val lessonFiles = Arrays.asList(*lessonFolder.folder.listFiles()!!)
+            for (lessonFile in lessonFiles) {
+
+                processLessonFile(lessonFile, extension, lessonFolder, targetFolder)
+            }
         }
     }
 
