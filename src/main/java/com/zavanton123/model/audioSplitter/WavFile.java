@@ -157,16 +157,16 @@ public class WavFile {
     }
 
     public static WavFile openWavFile(File file) throws IOException, WavFileException {
-        // Instantiate new Wavfile and store the file reference
+        // Instantiate new Wavfile and store the folder reference
         WavFile wavFile = new WavFile();
         wavFile.file = file;
 
-        // Create a new file input stream for reading file data
+        // Create a new folder input stream for reading folder data
         wavFile.iStream = new FileInputStream(file);
 
-        // Read the first 12 bytes of the file
+        // Read the first 12 bytes of the folder
         int bytesRead = wavFile.iStream.read(wavFile.buffer, 0, 12);
-        if (bytesRead != 12) throw new WavFileException("Not enough wav file bytes for header");
+        if (bytesRead != 12) throw new WavFileException("Not enough wav folder bytes for header");
 
         // Extract parts from the header
         long riffChunkID = getLE(wavFile.buffer, 0, 4);
@@ -179,9 +179,9 @@ public class WavFile {
         if (riffTypeID != RIFF_TYPE_ID)
             throw new WavFileException("Invalid Wav Header data, incorrect riff type ID");
 
-        // Check that the file size matches the number of bytes listed in header
+        // Check that the folder size matches the number of bytes listed in header
         if (file.length() != chunkSize + 8) {
-            throw new WavFileException("Header chunk size (" + chunkSize + ") does not match file size (" + file.length() + ")");
+            throw new WavFileException("Header chunk size (" + chunkSize + ") does not match folder size (" + file.length() + ")");
         }
 
         boolean foundFormat = false;
@@ -192,7 +192,7 @@ public class WavFile {
             // Read the first 8 bytes of the chunk (ID and chunk size)
             bytesRead = wavFile.iStream.read(wavFile.buffer, 0, 8);
             if (bytesRead == -1)
-                throw new WavFileException("Reached end of file without finding format chunk");
+                throw new WavFileException("Reached end of folder without finding format chunk");
             if (bytesRead != 8) throw new WavFileException("Could not read chunk header");
 
             // Extract the chunk ID and Size

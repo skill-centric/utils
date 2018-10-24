@@ -6,18 +6,19 @@ import com.zavanton123.model.courseCreator.CourseFoldersCreator;
 import com.zavanton123.model.lessonInitializer.LessonInitializer;
 import com.zavanton123.model.lessonList.LessonListMaker;
 import com.zavanton123.model.lessonList.NumberedLessonMaker;
+import com.zavanton123.model.folder.LessonWalker;
 import com.zavanton123.model.pdf.PdfFileValidator;
 import com.zavanton123.model.pdf.PdfProcessor;
 import com.zavanton123.model.pdf.SlidesFileValidator;
-import com.zavanton123.model.treewalker.TreeWalker;
 import com.zavanton123.model.video.VideoExporter;
 import com.zavanton123.utils.NoLessonsFolderException;
 import com.zavanton123.view.MvpView;
 import kotlin.Unit;
-import kotlin.jvm.functions.Function0;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.List;
 
 public class MainPresenter implements MvpPresenter {
 
@@ -167,12 +168,41 @@ public class MainPresenter implements MvpPresenter {
     }
 
     @Override
-    public void handleExportSlidesButton(File lessonFolder) {
+    public void handleExportSlidesButton(File lessonsFolder) {
 
-        TreeWalker treeWalker = new TreeWalker();
-        treeWalker.walkTree(lessonFolder, () -> {
-            // todo
-            return null;
+        File courseFolder = lessonsFolder.getParentFile();
+        File targetFolder = new File(courseFolder, "Slides");
+        if (!targetFolder.exists()) {
+            targetFolder.mkdirs();
+        }
+
+        String extension = ".pdf";
+
+        LessonWalker lessonWalker = new LessonWalker();
+        lessonWalker.walkTree(lessonsFolder, lessonFolder -> {
+
+            int parentOrderNumber = lessonFolder.getParentOrderNumber();
+            int orderNumber = lessonFolder.getOrderNumber();
+
+            File folder = lessonFolder.getFolder();
+            List<File> files = Arrays.asList(folder.listFiles());
+            for (File file : files) {
+
+                if (file.getName().endsWith(extension)) {
+
+                    String targetName = parentOrderNumber + "."
+                            + orderNumber + " "
+                            + file.getName();
+
+                    File targetFile = new File(targetFolder, targetName);
+
+                    // todo export file to target
+                    System.out.println("Copy file " + file.getName()
+                            + " to " + targetFile.getAbsolutePath());
+                }
+            }
+
+            return Unit.INSTANCE;
         });
     }
 

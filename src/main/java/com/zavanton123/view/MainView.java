@@ -92,7 +92,7 @@ public class MainView extends Application implements MvpView {
         makePdfAndPngButton.setOnAction(e -> {
 
             FileChooser fileChooser = new FileChooser();
-            fileChooser.setTitle("Choose the presentation file");
+            fileChooser.setTitle("Choose the presentation folder");
             fileChooser.setInitialDirectory(new File(DESKTOP));
             File slidesFile = fileChooser.showOpenDialog(primaryStage);
 
@@ -109,7 +109,7 @@ public class MainView extends Application implements MvpView {
         convertPdfToPngButton.setOnAction(e -> {
 
             FileChooser fileChooser = new FileChooser();
-            fileChooser.setTitle("Choose the PDF file");
+            fileChooser.setTitle("Choose the PDF folder");
             fileChooser.setInitialDirectory(new File(DESKTOP));
             File pdfFile = fileChooser.showOpenDialog(primaryStage);
 
@@ -313,7 +313,7 @@ public class MainView extends Application implements MvpView {
     public void showNotValidPdfFile() {
 
         // TODO
-        System.out.println("Not a valid pdf file");
+        System.out.println("Not a valid pdf folder");
     }
 
     @Override
