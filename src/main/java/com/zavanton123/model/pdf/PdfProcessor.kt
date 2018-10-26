@@ -18,22 +18,17 @@ class PdfProcessor(private val runner: TerminalCommandRunner = TerminalCommandRu
         if (!imagesDir.exists())
             imagesDir.mkdirs()
 
-        val commands = arrayOf("pdftoppm",
-                source,
-                target,
-                "-png",
-                "-r",
-                "300")
+        val command = "pdftoppm \"$source\" \"$target\" -png -r 300"
 
-        runner.runCommands(commands, callback)
+        runner.runCommand(command, callback)
     }
 
     fun createPdf(slidesFile: File, callback: TerminalCommandRunner.Callback) {
 
         val source = slidesFile.absolutePath
 
-        val commands = arrayOf("unoconv", "-f", "pdf", source)
+        val command = "unoconv -f pdf \"$source\""
 
-        runner.runCommands(commands, callback)
+        runner.runCommand(command, callback)
     }
 }

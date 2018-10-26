@@ -1,9 +1,13 @@
 package com.zavanton123.model.general
 
 import java.io.*
+import java.lang.StringBuilder
 import java.util.*
+import java.util.logging.Logger
 
 class TerminalCommandRunner {
+
+    private val log = Logger.getLogger(TerminalCommandRunner::class.java.name)
 
     interface Callback {
 
@@ -14,7 +18,7 @@ class TerminalCommandRunner {
     fun runCommand(command: String, callback: Callback) {
 
         val scriptFile = createScriptFile(command)
-        println("scriptFile absolute path: ${scriptFile.absolutePath}")
+        log.info("scriptFile absolute path: ${scriptFile.absolutePath}")
 
         Thread(Runnable {
 
@@ -47,33 +51,24 @@ class TerminalCommandRunner {
     }
 
     private fun showProcessConsoleOutput(process: Process) {
+
         val input = BufferedReader(InputStreamReader(process.inputStream))
         var line: String? = input.readLine()
 
+        val builder = StringBuilder()
+
         try {
             while (line != null) {
-                println(line)
+                builder.append(line)
                 line = input.readLine()
             }
+
+            log.info(builder.toString())
+
         } catch (e: IOException) {
-            e.printStackTrace()
+
+            log.throwing("TerminalCommandRunner",
+                    "showProcessConsoleOutput", e)
         }
-    }
-
-    fun runCommands(commands: Array<String>, callback: Callback) {
-        Thread(Runnable {
-
-            val process = Runtime.getRuntime().exec(commands)
-            val status = process.waitFor()
-
-            // Show what the process outputs to the console
-            showProcessConsoleOutput(process)
-
-            when (status) {
-                0 -> callback.onSuccess()
-                else -> callback.onFailure()
-            }
-
-        }).start()
     }
 }
