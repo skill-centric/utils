@@ -2,6 +2,7 @@ package com.zavanton123.model.video
 
 import com.zavanton123.model.general.TerminalCommandRunner
 import java.io.File
+import java.io.PrintWriter
 
 class VideoRenderer {
 
@@ -21,49 +22,37 @@ class VideoRenderer {
         val targetFilePath = "avformat:\"${target.absolutePath}\""
         println("targetFilePath: $targetFilePath")
 
-//        val commands = arrayOf("melt",
-//                kdenliveFilePath,
-//                targetFilePath,
-//                "-consumer",
-//                targetFilePath,
-//                "vcodec=libx264",
-//                "b=5000k",
-//                "acodec=aac",
-//                "ab=128k"
-//                )
+        val commandFile = createCommandFile()
 
-//        val commands = arrayOf("melt", kdenliveFilePath,
-//                "-consumer", "/home/zavanton/great.mp4")
-
-        val commandsOne = arrayOf("chmod", "+x", "/home/zavanton/Desktop/script.sh")
-
-        val commandsTwo = arrayOf("/home/zavanton/Desktop/script.sh")
-
-        printCommand(commandsOne)
+        val commands = arrayOf("${commandFile.absolutePath}")
 
         val runner = TerminalCommandRunner()
-        val callback = object : TerminalCommandRunner.Callback {
+
+        runner.runCommand(commands, object : TerminalCommandRunner.Callback {
             override fun onSuccess() {
                 println("Success!")
+
+                commandFile.delete()
             }
 
             override fun onFailure() {
                 println("Failed")
             }
-        }
-
-        runner.runCommand(commandsOne, callback)
-        Thread(Runnable {
-            Thread.sleep(2000)
-            runner.runCommand(commandsTwo, callback)
-        }).run()
+        })
     }
 
-    private fun printCommand(commands: Array<String>) {
-        val builder = StringBuilder()
-        for (command in commands) {
-            builder.append("$command ")
-        }
-        println(builder.toString() + "\n")
+    private fun createCommandFile(): File {
+
+        val contents = "melt \"/home/zavanton/Desktop/2. Singleton Pattern Example/Singleton Pattern Example - kdenlive/Singleton Pattern Example - kdenlive.kdenlive\" -consumer avformat:\"/home/zavanton/Desktop/2. Singleton Pattern Example/Singleton Pattern Example - kdenlive/Result.mp4\" vcodec=libx264 b=5000k acodec=aac ab=128k"
+
+        val name = "/home/zavanton/Desktop/script.sh"
+
+        val file = File(name)
+
+        PrintWriter(file).use { it.println(contents) }
+
+        file.setExecutable(true)
+
+        return file
     }
 }
