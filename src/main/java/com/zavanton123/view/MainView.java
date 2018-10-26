@@ -56,6 +56,8 @@ public class MainView extends Application implements MvpView {
 
         Button makePdfAndPngButton = setupMakePdfAndPngButton(primaryStage);
 
+        Button exportSlidesButton = setupExportAssetsButton(primaryStage, directoryChooser);
+
         Scene scene = setupScene(lessonListButton,
                 numberedLessonListButton,
                 exportVideoButton,
@@ -63,9 +65,23 @@ public class MainView extends Application implements MvpView {
                 lessonSetupButton,
                 createFoldersFromFileButton,
                 convertPdfToPngButton,
-                makePdfAndPngButton);
+                makePdfAndPngButton,
+                exportSlidesButton);
 
         setupPrimaryStage(primaryStage, scene);
+    }
+
+    private Button setupExportAssetsButton(Stage primaryStage, DirectoryChooser directoryChooser) {
+
+        Button exportAssetsButton = new Button("Export Assets");
+        exportAssetsButton.setMinWidth(MIN_BUTTON_WIDTH);
+        exportAssetsButton.setMinHeight(MIN_BUTTON_HEIGHT);
+        exportAssetsButton.setOnAction(e -> {
+            directoryChooser.setTitle("Choose the lesson folder");
+            File lessonFolder = directoryChooser.showDialog(primaryStage);
+            presenter.handleExportSlidesButton(lessonFolder);
+        });
+        return exportAssetsButton;
     }
 
     private Button setupMakePdfAndPngButton(Stage primaryStage) {
@@ -76,7 +92,7 @@ public class MainView extends Application implements MvpView {
         makePdfAndPngButton.setOnAction(e -> {
 
             FileChooser fileChooser = new FileChooser();
-            fileChooser.setTitle("Choose the presentation file");
+            fileChooser.setTitle("Choose the presentation folder");
             fileChooser.setInitialDirectory(new File(DESKTOP));
             File slidesFile = fileChooser.showOpenDialog(primaryStage);
 
@@ -93,7 +109,7 @@ public class MainView extends Application implements MvpView {
         convertPdfToPngButton.setOnAction(e -> {
 
             FileChooser fileChooser = new FileChooser();
-            fileChooser.setTitle("Choose the PDF file");
+            fileChooser.setTitle("Choose the PDF folder");
             fileChooser.setInitialDirectory(new File(DESKTOP));
             File pdfFile = fileChooser.showOpenDialog(primaryStage);
 
@@ -217,7 +233,8 @@ public class MainView extends Application implements MvpView {
                              Button lessonSetupButton,
                              Button createFoldersFromFileButton,
                              Button convertPdfToPngButton,
-                             Button makePdfAndPngButton) {
+                             Button makePdfAndPngButton,
+                             Button exportSlidesButton) {
 
         VBox vBox = new VBox(lessonListButton,
                 numberedLessonListButton,
@@ -226,7 +243,8 @@ public class MainView extends Application implements MvpView {
                 lessonSetupButton,
                 createFoldersFromFileButton,
                 convertPdfToPngButton,
-                makePdfAndPngButton);
+                makePdfAndPngButton,
+                exportSlidesButton);
 
         vBox.setAlignment(Pos.CENTER);
         vBox.setSpacing(VERTICAL_BOX_SPACING);
@@ -295,7 +313,7 @@ public class MainView extends Application implements MvpView {
     public void showNotValidPdfFile() {
 
         // TODO
-        System.out.println("Not a valid pdf file");
+        System.out.println("Not a valid pdf folder");
     }
 
     @Override

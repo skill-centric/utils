@@ -43,14 +43,14 @@ public class AudioCutOffProcessor {
         }
 
         try {
-            // Get the wave file from the embedded resources
+            // Get the wave folder from the embedded resources
             WavFile inputWavFile = WavFile.openWavFile(soundFile);
 
-            // Get the number of audio channels in the wav file
+            // Get the number of audio channels in the wav folder
             int numChannels = inputWavFile.getNumChannels();
 
-            // set the maximum number of frames for a target file,
-            // based on the number of milliseconds assigned for each file
+            // set the maximum number of frames for a target folder,
+            // based on the number of milliseconds assigned for each folder
             int frames = (int) inputWavFile.getSampleRate() * millesec / 1000;
 
             // Create a buffer of maxFramesPerFile frames
@@ -73,7 +73,7 @@ public class AudioCutOffProcessor {
             secondWavFile.writeFrames(buffer, framesRead);
             secondWavFile.close();
 
-            // Close the input file
+            // Close the input folder
             inputWavFile.close();
 
         } catch (Exception e) {
