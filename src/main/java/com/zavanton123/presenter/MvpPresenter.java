@@ -26,4 +26,6 @@ public interface MvpPresenter {
     void handleConvertPdfToPng(File pdfFile);
 
     void handleMakePdfAndPng(File slidesFile);
+
+    void handleExportSlidesButton(File lessonFolder);
 }
