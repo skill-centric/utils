@@ -6,6 +6,7 @@ plugins {
 group 'com.zavanton123'
 version '1.7'
 
+def anko_version = "0.10.7"
 def implementationVersion = '1.7.0'
 
 sourceCompatibility = 1.8
@@ -41,6 +42,7 @@ dependencies {
     // Apache Commons IO utils
     compile group: 'commons-io', name: 'commons-io', version: '2.6'
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+
 }
 compileKotlin {
     kotlinOptions {

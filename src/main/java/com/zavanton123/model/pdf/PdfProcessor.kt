@@ -1,22 +1,14 @@
 package com.zavanton123.model.pdf
 
-import java.io.BufferedReader
+import com.zavanton123.model.general.TerminalCommandRunner
 import java.io.File
-import java.io.IOException
-import java.io.InputStreamReader
 
-class PdfProcessor {
-
-    interface Callback {
-
-        fun onSuccess()
-        fun onFailure()
-    }
+class PdfProcessor(private val runner: TerminalCommandRunner = TerminalCommandRunner()) {
 
     fun convert(pdfFile: File,
                 targetDir: String,
                 targetName: String,
-                callback: Callback) {
+                callback: TerminalCommandRunner.Callback) {
 
         val source = pdfFile.absolutePath
 
@@ -26,53 +18,17 @@ class PdfProcessor {
         if (!imagesDir.exists())
             imagesDir.mkdirs()
 
-        val commands = arrayOf("pdftoppm",
-                source,
-                target,
-                "-png",
-                "-r",
-                "300")
+        val command = "pdftoppm \"$source\" \"$target\" -png -r 300"
 
-        runCommand(commands, callback)
+        runner.runCommand(command, callback)
     }
 
-    fun createPdf(slidesFile: File, callback: Callback) {
+    fun createPdf(slidesFile: File, callback: TerminalCommandRunner.Callback) {
 
         val source = slidesFile.absolutePath
 
-        val commands = arrayOf("unoconv", "-f", "pdf", source)
+        val command = "unoconv -f pdf \"$source\""
 
-        runCommand(commands, callback)
-    }
-
-    private fun runCommand(commands: Array<String>, callback: Callback) {
-        Thread(Runnable {
-
-            val process = Runtime.getRuntime().exec(commands)
-            val status = process.waitFor()
-
-            // Show what the process outputs to the console
-            showProcessConsoleOutput(process)
-
-            when(status){
-                0 -> callback.onSuccess()
-                else -> callback.onFailure()
-            }
-
-        }).start()
-    }
-
-    private fun showProcessConsoleOutput(process: Process) {
-        val input = BufferedReader(InputStreamReader(process.inputStream))
-        var line: String? = input.readLine()
-
-        try {
-            while (line != null) {
-                println(line)
-                line = input.readLine()
-            }
-        } catch (e: IOException) {
-            e.printStackTrace()
-        }
+        runner.runCommand(command, callback)
     }
 }
