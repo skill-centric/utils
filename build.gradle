@@ -4,9 +4,9 @@ plugins {
 }
 
 group 'com.zavanton123'
-version '1.6'
+version '1.7'
 
-def implementationVersion = '1.6.1'
+def implementationVersion = '1.7.0'
 
 sourceCompatibility = 1.8
 
