@@ -23,7 +23,9 @@ class TerminalCommandRunner {
         Thread(Runnable {
 
             val process = Runtime.getRuntime().exec(scriptFile.absolutePath)
+            log.info("calling waitFor()...")
             val status = process.waitFor()
+            log.info("Process status: $status")
 
             // Show what the process outputs to the console
             showProcessConsoleOutput(process)
@@ -42,6 +44,8 @@ class TerminalCommandRunner {
     private fun createScriptFile(contents: String): File {
 
         val random = Random().nextLong()
+
+        // todo replace from Desktop to other place
         val file = File("script-$random.sh")
 
         PrintWriter(file).use { it.println(contents) }

@@ -16,7 +16,8 @@ import com.zavanton123.utils.NoLessonsFolderException
 import com.zavanton123.view.MvpView
 import java.io.File
 
-class MainPresenter : MvpPresenter {
+class MainPresenter(private val videoRenderer: VideoRenderer = VideoRenderer())
+    : MvpPresenter {
 
     private var mvpView: MvpView? = null
 
@@ -40,17 +41,16 @@ class MainPresenter : MvpPresenter {
         createNumberedLessonList(projectFolder)
     }
 
-    override fun handlerRenderVideo(file: File) {
+    override fun handlerRenderVideo(tarFile: File) {
 
-//        if (!isKdenliveFileValid(file))
-//            return
+        if (!isValidTarArchive(tarFile))
+            return
 
-        val videoRenderer = VideoRenderer()
-        videoRenderer.renderTar(file)
+        videoRenderer.renderFromArchive(tarFile)
     }
 
-    private fun isKdenliveFileValid(kdenliveFile: File) =
-            kdenliveFile.name.endsWith(".kdenlive")
+    private fun isValidTarArchive(kdenliveFile: File) =
+            kdenliveFile.name.endsWith(".tar.gz")
 
     override fun handleAudioCutOff(soundFolder: File) {
 
