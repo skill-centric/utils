@@ -1,6 +1,7 @@
 package com.zavanton123.model.general
 
 import java.io.*
+import java.util.*
 
 class TerminalCommandRunner {
 
@@ -36,11 +37,10 @@ class TerminalCommandRunner {
 
     private fun createScriptFile(contents: String): File {
 
-        // todo replace with random name
-        val file = File("/home/zavanton/Desktop/script.sh")
+        val random = Random().nextLong()
+        val file = File("script-$random.sh")
 
         PrintWriter(file).use { it.println(contents) }
-
         file.setExecutable(true)
 
         return file
@@ -76,5 +76,4 @@ class TerminalCommandRunner {
 
         }).start()
     }
-
 }
