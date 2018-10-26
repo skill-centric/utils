@@ -1,7 +1,5 @@
 package com.zavanton123.view;
 
-import java.io.File;
-
 import com.zavanton123.presenter.MainPresenter;
 import com.zavanton123.presenter.MvpPresenter;
 import javafx.application.Application;
@@ -12,6 +10,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+
+import java.io.File;
 
 public class MainView extends Application implements MvpView {
 
@@ -25,28 +25,35 @@ public class MainView extends Application implements MvpView {
 
     MvpPresenter presenter;
 
+    private FileChooser fileChooser;
+    private DirectoryChooser directoryChooser;
+    private Stage primaryStage;
+
     @Override
     public void start(Stage primaryStage) throws Exception {
+
+        this.primaryStage = primaryStage;
 
         presenter = new MainPresenter();
         presenter.setView(this);
 
-        DirectoryChooser directoryChooser = createDirectoryChooser();
+        fileChooser = createFileChooser();
+        directoryChooser = createDirectoryChooser();
 
         Button lessonListButton =
-                setupLessonListButton(primaryStage, directoryChooser);
+                setupLessonListButton(primaryStage);
 
         Button numberedLessonListButton =
-                setupNumberedLessonListButton(primaryStage, directoryChooser);
+                setupNumberedLessonListButton(primaryStage);
 
-        Button exportVideoButton =
-                setupExportVideoButton(primaryStage, directoryChooser);
+        Button renderVideoButton =
+                setupRenderVideoButton(primaryStage);
 
         Button cutoffJoinButton =
-                setupCutoffJoinButton(primaryStage, directoryChooser);
+                setupCutoffJoinButton(primaryStage);
 
         Button lessonSetupButton =
-                setupLessonSetupButton(primaryStage, directoryChooser);
+                setupLessonSetupButton(primaryStage);
 
         Button createFoldersFromFileButton =
                 setupCreateFoldersFromFileButton(primaryStage);
@@ -56,11 +63,11 @@ public class MainView extends Application implements MvpView {
 
         Button makePdfAndPngButton = setupMakePdfAndPngButton(primaryStage);
 
-        Button exportSlidesButton = setupExportAssetsButton(primaryStage, directoryChooser);
+        Button exportSlidesButton = setupExportAssetsButton(primaryStage);
 
         Scene scene = setupScene(lessonListButton,
                 numberedLessonListButton,
-                exportVideoButton,
+                renderVideoButton,
                 cutoffJoinButton,
                 lessonSetupButton,
                 createFoldersFromFileButton,
@@ -71,7 +78,7 @@ public class MainView extends Application implements MvpView {
         setupPrimaryStage(primaryStage, scene);
     }
 
-    private Button setupExportAssetsButton(Stage primaryStage, DirectoryChooser directoryChooser) {
+    private Button setupExportAssetsButton(Stage primaryStage) {
 
         Button exportAssetsButton = new Button("Export Assets");
         exportAssetsButton.setMinWidth(MIN_BUTTON_WIDTH);
@@ -91,9 +98,7 @@ public class MainView extends Application implements MvpView {
         makePdfAndPngButton.setMinHeight(MIN_BUTTON_HEIGHT);
         makePdfAndPngButton.setOnAction(e -> {
 
-            FileChooser fileChooser = new FileChooser();
-            fileChooser.setTitle("Choose the presentation folder");
-            fileChooser.setInitialDirectory(new File(DESKTOP));
+
             File slidesFile = fileChooser.showOpenDialog(primaryStage);
 
             presenter.handleMakePdfAndPng(slidesFile);
@@ -135,7 +140,7 @@ public class MainView extends Application implements MvpView {
         return createFoldersFromFileButton;
     }
 
-    private Button setupLessonSetupButton(Stage primaryStage, DirectoryChooser directoryChooser) {
+    private Button setupLessonSetupButton(Stage primaryStage) {
         Button lessonSetupButton = new Button("Setup Lesson");
         lessonSetupButton.setMinWidth(MIN_BUTTON_WIDTH);
         lessonSetupButton.setMinHeight(MIN_BUTTON_HEIGHT);
@@ -147,19 +152,7 @@ public class MainView extends Application implements MvpView {
         return lessonSetupButton;
     }
 
-    private Button setupJoinAudioButton(Stage primaryStage, DirectoryChooser directoryChooser) {
-        Button joinAudioButton = new Button("Join Audio Files");
-        joinAudioButton.setMinWidth(MIN_BUTTON_WIDTH);
-        joinAudioButton.setMinHeight(MIN_BUTTON_HEIGHT);
-        joinAudioButton.setOnAction(e -> {
-            directoryChooser.setTitle("Choose the lesson folder containing sounds directory");
-            File lessonFolder = directoryChooser.showDialog(primaryStage);
-            presenter.handleJoinAudioFiles(lessonFolder);
-        });
-        return joinAudioButton;
-    }
-
-    private Button setupCutoffJoinButton(Stage primaryStage, DirectoryChooser directoryChooser) {
+    private Button setupCutoffJoinButton(Stage primaryStage) {
         Button joinAudioButton = new Button("Cut Off + Join Audio Files");
         joinAudioButton.setMinWidth(MIN_BUTTON_WIDTH);
         joinAudioButton.setMinHeight(MIN_BUTTON_HEIGHT);
@@ -171,26 +164,7 @@ public class MainView extends Application implements MvpView {
         return joinAudioButton;
     }
 
-    private Button setupCutOffAudioButton(Stage primaryStage, DirectoryChooser directoryChooser) {
-        Button cutOffAudioButton = new Button("Cut Off Audio Files");
-        cutOffAudioButton.setMinWidth(MIN_BUTTON_WIDTH);
-        cutOffAudioButton.setMinHeight(MIN_BUTTON_HEIGHT);
-        cutOffAudioButton.setOnAction(e -> {
-            File lessonFolder = directoryChooser.showDialog(primaryStage);
-            directoryChooser.setTitle("Choose the lesson folder containing sounds directory");
-            presenter.handleAudioCutOff(lessonFolder);
-        });
-        return cutOffAudioButton;
-    }
-
-    private DirectoryChooser createDirectoryChooser() {
-        DirectoryChooser directoryChooser = new DirectoryChooser();
-        directoryChooser.setTitle("Choose Project Folder");
-        directoryChooser.setInitialDirectory(new File(DESKTOP));
-        return directoryChooser;
-    }
-
-    private Button setupLessonListButton(Stage primaryStage, DirectoryChooser directoryChooser) {
+    private Button setupLessonListButton(Stage primaryStage) {
         Button lessonListButton = new Button("Print Lesson List");
         lessonListButton.setMinWidth(MIN_BUTTON_WIDTH);
         lessonListButton.setMinHeight(MIN_BUTTON_HEIGHT);
@@ -202,7 +176,7 @@ public class MainView extends Application implements MvpView {
         return lessonListButton;
     }
 
-    private Button setupNumberedLessonListButton(Stage primaryStage, DirectoryChooser directoryChooser) {
+    private Button setupNumberedLessonListButton(Stage primaryStage) {
         Button numberedLessonListButton = new Button("Print Numbered Lessons");
         numberedLessonListButton.setMinWidth(MIN_BUTTON_WIDTH);
         numberedLessonListButton.setMinHeight(MIN_BUTTON_HEIGHT);
@@ -213,17 +187,19 @@ public class MainView extends Application implements MvpView {
         return numberedLessonListButton;
     }
 
-    private Button setupExportVideoButton(Stage primaryStage, DirectoryChooser directoryChooser) {
+    private Button setupRenderVideoButton(Stage primaryStage) {
 
-        Button exportVideoButton = new Button("Export Video");
-        exportVideoButton.setMinWidth(MIN_BUTTON_WIDTH);
-        exportVideoButton.setMinHeight(MIN_BUTTON_HEIGHT);
+        Button renderVideoButton = new Button("Render Video");
+        renderVideoButton.setMinWidth(MIN_BUTTON_WIDTH);
+        renderVideoButton.setMinHeight(MIN_BUTTON_HEIGHT);
 
-        exportVideoButton.setOnAction(e -> {
-            File projectFolder = directoryChooser.showDialog(primaryStage);
-            presenter.handleExportVideos(projectFolder);
+        renderVideoButton.setOnAction(e -> {
+
+            fileChooser.setTitle("Choose Kdenlive File");
+            File kdenliveFile = fileChooser.showOpenDialog(primaryStage);
+            presenter.handlerRenderVideo(kdenliveFile);
         });
-        return exportVideoButton;
+        return renderVideoButton;
     }
 
     private Scene setupScene(Button lessonListButton,
@@ -349,5 +325,21 @@ public class MainView extends Application implements MvpView {
 
         // TODO
         System.out.println("Failed to Convert PDF to PNG");
+    }
+
+    private FileChooser createFileChooser() {
+
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Choose a File");
+        fileChooser.setInitialDirectory(new File(DESKTOP));
+        return fileChooser;
+    }
+
+    private DirectoryChooser createDirectoryChooser() {
+
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        directoryChooser.setTitle("Choose a Folder");
+        directoryChooser.setInitialDirectory(new File(DESKTOP));
+        return directoryChooser;
     }
 }

@@ -4,30 +4,22 @@ import com.zavanton123.model.audioJoiner.AudioJoiner
 import com.zavanton123.model.audioSplitter.AudioCutOffProcessor
 import com.zavanton123.model.courseCreator.CourseFoldersCreator
 import com.zavanton123.model.folder.AssetsExporter
+import com.zavanton123.model.general.TerminalCommandRunner
 import com.zavanton123.model.lessonInitializer.LessonInitializer
 import com.zavanton123.model.lessonList.LessonListMaker
 import com.zavanton123.model.lessonList.NumberedLessonMaker
-import com.zavanton123.model.folder.LessonWalker
 import com.zavanton123.model.pdf.PdfFileValidator
 import com.zavanton123.model.pdf.PdfProcessor
 import com.zavanton123.model.pdf.SlidesFileValidator
-import com.zavanton123.model.video.VideoExporter
+import com.zavanton123.model.video.VideoRenderer
 import com.zavanton123.utils.NoLessonsFolderException
 import com.zavanton123.view.MvpView
-
 import java.io.File
-import java.util.Arrays
 
-class MainPresenter : MvpPresenter {
+class MainPresenter(private val videoRenderer: VideoRenderer = VideoRenderer())
+    : MvpPresenter {
 
     private var mvpView: MvpView? = null
-
-    interface ExportFileCallback {
-
-        fun onExportVideoSuccess()
-
-        fun onExportVideoFail()
-    }
 
     override fun setView(mvpView: MvpView) {
         this.mvpView = mvpView
@@ -49,13 +41,16 @@ class MainPresenter : MvpPresenter {
         createNumberedLessonList(projectFolder)
     }
 
-    override fun handleExportVideos(projectFolder: File) {
+    override fun handlerRenderVideo(tarFile: File) {
 
-        if (!isFolderValid(projectFolder))
+        if (!isValidTarArchive(tarFile))
             return
 
-        exportVideos(projectFolder)
+        videoRenderer.renderFromArchive(tarFile)
     }
+
+    private fun isValidTarArchive(kdenliveFile: File) =
+            kdenliveFile.name.endsWith(".tar.gz")
 
     override fun handleAudioCutOff(soundFolder: File) {
 
@@ -112,7 +107,7 @@ class MainPresenter : MvpPresenter {
 
         val pdfProcessor = PdfProcessor()
         pdfProcessor.convert(pdfFile, "WIP/images", "image",
-                object : PdfProcessor.Callback {
+                object : TerminalCommandRunner.Callback {
                     override fun onSuccess() {
 
                         mvpView!!.showPdfToPngConversionSuccess()
@@ -134,7 +129,7 @@ class MainPresenter : MvpPresenter {
         }
 
         val pdfProcessor = PdfProcessor()
-        pdfProcessor.createPdf(slidesFile, object : PdfProcessor.Callback {
+        pdfProcessor.createPdf(slidesFile, object : TerminalCommandRunner.Callback {
             override fun onSuccess() {
 
                 mvpView!!.showCreatePdfSuccess()
@@ -167,29 +162,6 @@ class MainPresenter : MvpPresenter {
         return File(slidesFile.parent, fileNameWithExtension)
     }
 
-    private fun exportVideos(projectFolder: File) {
-
-        if (!isFolderValid(projectFolder))
-            return
-
-        try {
-            val videoExporter = VideoExporter()
-            videoExporter.exportFiles(projectFolder, object : ExportFileCallback {
-                override fun onExportVideoSuccess() {
-                    mvpView!!.showExportVideoSuccess()
-                }
-
-                override fun onExportVideoFail() {
-                    mvpView!!.showExportVideoFail()
-                }
-            })
-
-        } catch (ex: NoLessonsFolderException) {
-
-            mvpView!!.showNotLessonsFolder()
-        }
-
-    }
 
     private fun createNumberedLessonList(projectFolder: File) {
 
