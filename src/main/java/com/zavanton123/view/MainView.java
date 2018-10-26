@@ -39,8 +39,8 @@ public class MainView extends Application implements MvpView {
         Button numberedLessonListButton =
                 setupNumberedLessonListButton(primaryStage, directoryChooser);
 
-        Button exportVideoButton =
-                setupExportVideoButton(primaryStage, directoryChooser);
+        Button renderVideoButton =
+                setupRenderVideoButton(primaryStage, directoryChooser);
 
         Button cutoffJoinButton =
                 setupCutoffJoinButton(primaryStage, directoryChooser);
@@ -60,7 +60,7 @@ public class MainView extends Application implements MvpView {
 
         Scene scene = setupScene(lessonListButton,
                 numberedLessonListButton,
-                exportVideoButton,
+                renderVideoButton,
                 cutoffJoinButton,
                 lessonSetupButton,
                 createFoldersFromFileButton,
@@ -184,6 +184,7 @@ public class MainView extends Application implements MvpView {
     }
 
     private DirectoryChooser createDirectoryChooser() {
+
         DirectoryChooser directoryChooser = new DirectoryChooser();
         directoryChooser.setTitle("Choose Project Folder");
         directoryChooser.setInitialDirectory(new File(DESKTOP));
@@ -213,17 +214,18 @@ public class MainView extends Application implements MvpView {
         return numberedLessonListButton;
     }
 
-    private Button setupExportVideoButton(Stage primaryStage, DirectoryChooser directoryChooser) {
+    private Button setupRenderVideoButton(Stage primaryStage, DirectoryChooser directoryChooser) {
 
-        Button exportVideoButton = new Button("Export Video");
-        exportVideoButton.setMinWidth(MIN_BUTTON_WIDTH);
-        exportVideoButton.setMinHeight(MIN_BUTTON_HEIGHT);
+        Button renderVideoButton = new Button("Render Video");
+        renderVideoButton.setMinWidth(MIN_BUTTON_WIDTH);
+        renderVideoButton.setMinHeight(MIN_BUTTON_HEIGHT);
 
-        exportVideoButton.setOnAction(e -> {
+        renderVideoButton.setOnAction(e -> {
+
             File projectFolder = directoryChooser.showDialog(primaryStage);
-            presenter.handleExportVideos(projectFolder);
+            presenter.handlerRenderVideo(projectFolder);
         });
-        return exportVideoButton;
+        return renderVideoButton;
     }
 
     private Scene setupScene(Button lessonListButton,
