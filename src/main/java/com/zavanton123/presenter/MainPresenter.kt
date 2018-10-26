@@ -4,6 +4,7 @@ import com.zavanton123.model.audioJoiner.AudioJoiner
 import com.zavanton123.model.audioSplitter.AudioCutOffProcessor
 import com.zavanton123.model.courseCreator.CourseFoldersCreator
 import com.zavanton123.model.folder.AssetsExporter
+import com.zavanton123.model.general.TerminalCommandRunner
 import com.zavanton123.model.lessonInitializer.LessonInitializer
 import com.zavanton123.model.lessonList.LessonListMaker
 import com.zavanton123.model.lessonList.NumberedLessonMaker
@@ -18,13 +19,6 @@ import java.io.File
 class MainPresenter : MvpPresenter {
 
     private var mvpView: MvpView? = null
-
-    interface ExportFileCallback {
-
-        fun onExportVideoSuccess()
-
-        fun onExportVideoFail()
-    }
 
     override fun setView(mvpView: MvpView) {
         this.mvpView = mvpView
@@ -113,7 +107,7 @@ class MainPresenter : MvpPresenter {
 
         val pdfProcessor = PdfProcessor()
         pdfProcessor.convert(pdfFile, "WIP/images", "image",
-                object : PdfProcessor.Callback {
+                object : TerminalCommandRunner.Callback {
                     override fun onSuccess() {
 
                         mvpView!!.showPdfToPngConversionSuccess()
@@ -135,7 +129,7 @@ class MainPresenter : MvpPresenter {
         }
 
         val pdfProcessor = PdfProcessor()
-        pdfProcessor.createPdf(slidesFile, object : PdfProcessor.Callback {
+        pdfProcessor.createPdf(slidesFile, object : TerminalCommandRunner.Callback {
             override fun onSuccess() {
 
                 mvpView!!.showCreatePdfSuccess()

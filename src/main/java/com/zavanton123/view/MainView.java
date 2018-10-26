@@ -195,8 +195,7 @@ public class MainView extends Application implements MvpView {
 
         renderVideoButton.setOnAction(e -> {
 
-            FileChooser fileChooser = new FileChooser();
-            fileChooser.setTitle("Choose kdenlive file");
+            fileChooser.setTitle("Choose Kdenlive File");
             File kdenliveFile = fileChooser.showOpenDialog(primaryStage);
             presenter.handlerRenderVideo(kdenliveFile);
         });

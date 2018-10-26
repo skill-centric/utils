@@ -6,6 +6,6 @@ class VideoRenderer {
 
     fun render(kdenliveFile: File) {
 
-        println("render method is called.")
+        // todo
     }
 }
