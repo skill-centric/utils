@@ -52,8 +52,11 @@ class VideoRenderer {
             }
         }
 
-//        runner.runCommand(commandsOne, callback)
-        runner.runCommand(commandsTwo, callback)
+        runner.runCommand(commandsOne, callback)
+        Thread(Runnable {
+            Thread.sleep(2000)
+            runner.runCommand(commandsTwo, callback)
+        }).run()
     }
 
     private fun printCommand(commands: Array<String>) {
