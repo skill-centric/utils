@@ -40,13 +40,13 @@ class MainPresenter : MvpPresenter {
         createNumberedLessonList(projectFolder)
     }
 
-    override fun handlerRenderVideo(kdenliveFile: File) {
+    override fun handlerRenderVideo(file: File) {
 
-        if (!isKdenliveFileValid(kdenliveFile))
-            return
+//        if (!isKdenliveFileValid(file))
+//            return
 
         val videoRenderer = VideoRenderer()
-        videoRenderer.render(kdenliveFile)
+        videoRenderer.renderTar(file)
     }
 
     private fun isKdenliveFileValid(kdenliveFile: File) =

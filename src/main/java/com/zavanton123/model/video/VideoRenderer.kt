@@ -4,7 +4,7 @@ import com.zavanton123.model.general.TerminalCommandRunner
 import java.io.File
 import java.util.logging.Logger
 
-class VideoRenderer {
+class VideoRenderer(private val commandRunner: TerminalCommandRunner = TerminalCommandRunner()) {
 
     private val log: Logger = Logger.getLogger(VideoRenderer::class.java.name)
 
@@ -12,9 +12,7 @@ class VideoRenderer {
 
         val command = setupCommand(kdenliveFile)
 
-        val runner = TerminalCommandRunner()
-
-        runner.runCommand(command, object : TerminalCommandRunner.Callback {
+        commandRunner.runCommand(command, object : TerminalCommandRunner.Callback {
             override fun onSuccess() {
                 log.info("Success!")
             }
@@ -23,6 +21,33 @@ class VideoRenderer {
                 log.info("Failed")
             }
         })
+    }
+
+    fun renderTar(tarFile: File){
+
+        val parentFile = tarFile.parentFile
+        val tmpFolder = File(parentFile, "tmp")
+        if(!tmpFolder.exists())
+            tmpFolder.mkdirs()
+
+        val extractCommand = "tar xvzf \"${tarFile.absolutePath}\" -C \"${tmpFolder.absolutePath}\""
+        log.info("extractCommand: $extractCommand")
+
+        commandRunner.runCommand(extractCommand, object : TerminalCommandRunner.Callback {
+
+            override fun onSuccess() {
+                log.info("Successfully extracted the tar archive to tmp folder!")
+
+                // todo render video file
+            }
+
+            override fun onFailure() {
+                log.severe("Failed to extract the tar archive to tmp folder!")
+            }
+        })
+
+
+        // todo delete tmp folder
     }
 
     private fun setupCommand(kdenliveFile: File): String {
