@@ -1,8 +1,8 @@
 package com.zavanton123.model.general
 
 import java.io.*
-import java.lang.StringBuilder
 import java.util.*
+import java.util.concurrent.TimeUnit
 import java.util.logging.Logger
 
 class TerminalCommandRunner {
@@ -24,19 +24,29 @@ class TerminalCommandRunner {
 
             val process = Runtime.getRuntime().exec(scriptFile.absolutePath)
             log.info("calling waitFor()...")
-            val status = process.waitFor()
-            log.info("Process status: $status")
 
-            // Show what the process outputs to the console
-            showProcessConsoleOutput(process)
+            val isSuccess = process.waitFor(10, TimeUnit.MINUTES)
 
-            when (status) {
-                0 -> {
-                    callback.onSuccess()
-                    scriptFile.delete()
-                }
-                else -> callback.onFailure()
+            if (isSuccess) {
+                callback.onSuccess()
+                scriptFile.delete()
+            } else {
+                callback.onFailure()
             }
+
+//            val status = process.waitFor()
+//            log.info("Process status: $status")
+//
+//            // Show what the process outputs to the console
+//            showProcessConsoleOutput(process)
+//
+//            when (status) {
+//                0 -> {
+//                    callback.onSuccess()
+//                    scriptFile.delete()
+//                }
+//                else -> callback.onFailure()
+//            }
 
         }).start()
     }
