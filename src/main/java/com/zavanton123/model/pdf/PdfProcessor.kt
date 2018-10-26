@@ -25,7 +25,7 @@ class PdfProcessor(private val runner: TerminalCommandRunner = TerminalCommandRu
                 "-r",
                 "300")
 
-        runner.runCommand(commands, callback)
+        runner.runCommands(commands, callback)
     }
 
     fun createPdf(slidesFile: File, callback: TerminalCommandRunner.Callback) {
@@ -34,6 +34,6 @@ class PdfProcessor(private val runner: TerminalCommandRunner = TerminalCommandRu
 
         val commands = arrayOf("unoconv", "-f", "pdf", source)
 
-        runner.runCommand(commands, callback)
+        runner.runCommands(commands, callback)
     }
 }
