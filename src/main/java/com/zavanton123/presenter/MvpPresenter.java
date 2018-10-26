@@ -11,7 +11,7 @@ public interface MvpPresenter {
 
     void handlePrintNumberedLessonList(File projectFolder);
 
-    void handlerRenderVideo(File projectFolder);
+    void handlerRenderVideo(File kdenliveFile);
 
     void handleAudioCutOff(File lessonFolder);
 

@@ -10,6 +10,7 @@ import com.zavanton123.model.lessonList.NumberedLessonMaker
 import com.zavanton123.model.pdf.PdfFileValidator
 import com.zavanton123.model.pdf.PdfProcessor
 import com.zavanton123.model.pdf.SlidesFileValidator
+import com.zavanton123.model.video.VideoRenderer
 import com.zavanton123.utils.NoLessonsFolderException
 import com.zavanton123.view.MvpView
 import java.io.File
@@ -45,13 +46,17 @@ class MainPresenter : MvpPresenter {
         createNumberedLessonList(projectFolder)
     }
 
-    override fun handlerRenderVideo(projectFolder: File) {
+    override fun handlerRenderVideo(kdenliveFile: File) {
 
-        if (!isFolderValid(projectFolder))
+        if (!isKdenliveFileValid(kdenliveFile))
             return
 
-        // todo
+        val videoRenderer = VideoRenderer()
+        videoRenderer.render(kdenliveFile)
     }
+
+    private fun isKdenliveFileValid(kdenliveFile: File) =
+            kdenliveFile.name.endsWith(".kdenlive")
 
     override fun handleAudioCutOff(soundFolder: File) {
 
