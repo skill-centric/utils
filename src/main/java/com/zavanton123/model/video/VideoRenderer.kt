@@ -2,37 +2,41 @@ package com.zavanton123.model.video
 
 import com.zavanton123.model.general.TerminalCommandRunner
 import java.io.File
+import java.util.logging.Logger
 
 class VideoRenderer {
+
+    private val log: Logger = Logger.getLogger(VideoRenderer::class.java.name)
 
     fun render(kdenliveFile: File) {
 
         val videoFileName = getVideoFileName(kdenliveFile,
-                "mp4",
-                " - kdenlive.kdenlive")
+                "mp4", " - kdenlive.kdenlive")
 
         val videoFile = File(kdenliveFile.parent, videoFileName)
 
         val kdenliveFilePath = "\"${kdenliveFile.absolutePath}\""
-        println("kdenliveFilePath: $kdenliveFilePath")
+        log.info("kdenliveFilePath: $kdenliveFilePath")
 
         val videoFilePath = "\"${videoFile.absolutePath}\""
-        println("videoFilePath: $videoFilePath")
+        log.info("videoFilePath: $videoFilePath")
 
-        val targetFilePath = "avformat:$videoFilePath"
+        val command = "melt $kdenliveFilePath " +
+                "-consumer avformat:$videoFilePath " +
+                "vcodec=libx264 b=5000k acodec=aac ab=128k"
 
-        val commands = "melt \"/home/zavanton/Desktop/2. Singleton Pattern Example/Singleton Pattern Example - kdenlive/Singleton Pattern Example - kdenlive.kdenlive\" -consumer avformat:\"/home/zavanton/Desktop/2. Singleton Pattern Example/Singleton Pattern Example - kdenlive/Result.mp4\" vcodec=libx264 b=5000k acodec=aac ab=128k"
+        log.info("command: $command")
 
         val runner = TerminalCommandRunner()
 
-        runner.runCommand(commands, object : TerminalCommandRunner.Callback {
+        runner.runCommand(command, object : TerminalCommandRunner.Callback {
             override fun onSuccess() {
-                println("Success!")
+                log.info("Success!")
 
             }
 
             override fun onFailure() {
-                println("Failed")
+                log.info("Failed")
             }
         })
     }
