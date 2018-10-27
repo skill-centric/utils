@@ -9,7 +9,8 @@ class FolderConverter {
         val numberedFolders = arrayListOf<SectionFolder>()
 
         for (folder in folders) {
-            numberedFolders.add(toSectionFolder(folder))
+            if(folder.isDirectory)
+                numberedFolders.add(toSectionFolder(folder))
         }
 
         return numberedFolders
