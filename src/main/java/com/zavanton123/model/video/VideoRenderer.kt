@@ -71,7 +71,7 @@ class VideoRenderer(private val commandRunner:
         })
     }
 
-    private fun setupCommand(kdenliveFile: File, targetFolder: String): String {
+    private fun setupCommandOriginal(kdenliveFile: File, targetFolder: String): String {
 
         val kdenliveFilePath = "\"${kdenliveFile.absolutePath}\""
         log.info("kdenliveFilePath: $kdenliveFilePath")
@@ -82,6 +82,28 @@ class VideoRenderer(private val commandRunner:
         val command = "melt $kdenliveFilePath " +
                 "-consumer avformat:$videoFilePath " +
                 "vcodec=libx264 b=5000k acodec=aac ab=128k"
+        log.info("command: $command")
+
+        return command
+    }
+
+    private fun setupCommand(kdenliveFile: File, targetFolder: String): String {
+
+        val kdenliveFilePath = "\"${kdenliveFile.absolutePath}\""
+        log.info("kdenliveFilePath: $kdenliveFilePath")
+
+        val videoFilePath = getVideoFilePath(kdenliveFile, targetFolder)
+        log.info("videoFilePath: $videoFilePath")
+
+        val commandOriginal = "melt $kdenliveFilePath " +
+                "-consumer avformat:$videoFilePath " +
+                "vcodec=libx264 b=5000k acodec=aac ab=128k"
+
+        val command = "melt $kdenliveFilePath " +
+                "-consumer avformat:$videoFilePath " +
+                "properties=x264-medium f=mp4 vcodec=libx264 " +
+                "acodec=aac g=120 crf=23 ab=160k preset=faster threads=1 real_time=-1"
+
         log.info("command: $command")
 
         return command

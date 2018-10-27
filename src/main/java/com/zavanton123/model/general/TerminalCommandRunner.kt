@@ -35,21 +35,6 @@ class TerminalCommandRunner {
                 callback.onFailure()
             }
 
-
-//            val status = process.waitFor()
-//            log.info("Process status: $status")
-//
-//            // Show what the process outputs to the console
-//            showProcessConsoleOutput(process)
-//
-//            when (status) {
-//                0 -> {
-//                    callback.onSuccess()
-//                    scriptFile.delete()
-//                }
-//                else -> callback.onFailure()
-//            }
-
         }).start()
     }
 
@@ -57,34 +42,11 @@ class TerminalCommandRunner {
 
         val random = Random().nextLong()
 
-        // todo replace from Desktop to other place
         val file = File("script-$random.sh")
 
         PrintWriter(file).use { it.println(contents) }
         file.setExecutable(true)
 
         return file
-    }
-
-    private fun showProcessConsoleOutput(process: Process) {
-
-        val input = BufferedReader(InputStreamReader(process.inputStream))
-        var line: String? = input.readLine()
-
-        val builder = StringBuilder()
-
-        try {
-            while (line != null) {
-                builder.append(line)
-                line = input.readLine()
-            }
-
-            log.info(builder.toString())
-
-        } catch (e: IOException) {
-
-            log.throwing("TerminalCommandRunner",
-                    "showProcessConsoleOutput", e)
-        }
     }
 }
