@@ -6,8 +6,7 @@ plugins {
 group 'com.zavanton123'
 version '1.8'
 
-def anko_version = "0.10.7"
-def implementationVersion = '1.8.1'
+def implementationVersion = '1.8.2'
 
 sourceCompatibility = 1.8
 

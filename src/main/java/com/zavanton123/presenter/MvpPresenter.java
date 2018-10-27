@@ -27,5 +27,5 @@ public interface MvpPresenter {
 
     void handleMakePdfAndPng(File slidesFile);
 
-    void handleExportSlidesButton(File lessonFolder);
+    void handleExportAssetsButton(File lessonFolder);
 }

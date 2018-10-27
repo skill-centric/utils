@@ -145,13 +145,13 @@ class MainPresenter(private val videoRenderer: VideoRenderer = VideoRenderer())
         })
     }
 
-    override fun handleExportSlidesButton(lessonsFolder: File) {
+    override fun handleExportAssetsButton(lessonsFolder: File) {
 
         val assetsExporter = AssetsExporter()
-        assetsExporter.export(lessonsFolder, ".pdf", "SlidesPdf")
-        assetsExporter.export(lessonsFolder, ".pptx", "SlidesPPt")
-        assetsExporter.export(lessonsFolder, ".odp", "SlidesPPt")
-        assetsExporter.export(lessonsFolder, ".mp4", "Video")
+        assetsExporter.export(lessonsFolder, ".pptx", "Assets/PPT")
+        assetsExporter.export(lessonsFolder, ".odp", "Assets/PPT")
+        assetsExporter.export(lessonsFolder, ".pdf", "Assets/PDF")
+        assetsExporter.export(lessonsFolder, ".mp4", "Assets/VIDEO")
     }
 
     private fun getPdfFileFromSlidesFileName(slidesFile: File): File {
