@@ -4,32 +4,36 @@ import com.zavanton123.model.general.TerminalCommandRunner
 import java.io.File
 import java.util.logging.Logger
 
-class VideoRenderer(private val commandRunner: TerminalCommandRunner = TerminalCommandRunner()) {
+class VideoRenderer(private val commandRunner:
+                    TerminalCommandRunner = TerminalCommandRunner()) {
 
     private val log: Logger = Logger.getLogger(VideoRenderer::class.java.name)
 
-    fun renderFromArchive(tarFile: File){
+    fun renderFromArchive(tarFile: File) {
 
         val parentFile = tarFile.parentFile
-        val tmpFolder = createFolder(parentFile, "tmp")
+        val wipFolder = createFolder(parentFile, "WIP")
 
         val extractCommand = "tar xvzf \"${tarFile.absolutePath}\" " +
-                "-C \"${tmpFolder.absolutePath}\""
+                "-C \"${wipFolder.absolutePath}\""
         log.info("extractCommand: $extractCommand")
 
         // todo remove callback hell
-        commandRunner.runCommand(extractCommand, object : TerminalCommandRunner.Callback {
+        commandRunner.runCommand(extractCommand,
+                object : TerminalCommandRunner.Callback {
 
-            override fun onSuccess() {
-                log.info("Successfully extracted the tar archive to tmp folder!")
+                    override fun onSuccess() {
+                        log.info("Successfully extracted " +
+                                "the tar archive to tmp folder!")
 
-                renderFromTmpFolder(tmpFolder)
-            }
+                        renderFromWipFolder(wipFolder)
+                    }
 
-            override fun onFailure() {
-                log.severe("Failed to extract the tar archive to tmp folder!")
-            }
-        })
+                    override fun onFailure() {
+                        log.severe("An error occurred while " +
+                                "extracting the tar archive to tmp folder!")
+                    }
+                })
     }
 
     private fun createFolder(parentFile: File?, folderName: String): File {
@@ -39,9 +43,9 @@ class VideoRenderer(private val commandRunner: TerminalCommandRunner = TerminalC
         return tmpFolder
     }
 
-    private fun renderFromTmpFolder(tmpFolder: File) {
+    private fun renderFromWipFolder(wipFolder: File) {
 
-        for (file in tmpFolder.listFiles()) {
+        for (file in wipFolder.listFiles()) {
 
             if (file.name.endsWith(".kdenlive")) {
 
@@ -56,22 +60,18 @@ class VideoRenderer(private val commandRunner: TerminalCommandRunner = TerminalC
         val renderCommand = setupCommand(kdenliveFile, targetFolder)
 
         commandRunner.runCommand(renderCommand, object : TerminalCommandRunner.Callback {
-            override fun onSuccess() {
-                log.info("Successfully rendered kdenlive project to video!")
 
-                // todo move this logic outside the callback hell
-                // remove tmp folder when finished rendering
-                val tmpFolder = File(kdenliveFile.parent)
-                tmpFolder.deleteRecursively()
+            override fun onSuccess() {
+                log.info("Successfully rendered kdenlive project!")
             }
 
             override fun onFailure() {
-                log.info("Failed")
+                log.info("An error occurred while rendering kdenlive project!")
             }
         })
     }
 
-    private fun setupCommand(kdenliveFile: File, targetFolder: String): String {
+    private fun setupCommandOriginal(kdenliveFile: File, targetFolder: String): String {
 
         val kdenliveFilePath = "\"${kdenliveFile.absolutePath}\""
         log.info("kdenliveFilePath: $kdenliveFilePath")
@@ -82,6 +82,28 @@ class VideoRenderer(private val commandRunner: TerminalCommandRunner = TerminalC
         val command = "melt $kdenliveFilePath " +
                 "-consumer avformat:$videoFilePath " +
                 "vcodec=libx264 b=5000k acodec=aac ab=128k"
+        log.info("command: $command")
+
+        return command
+    }
+
+    private fun setupCommand(kdenliveFile: File, targetFolder: String): String {
+
+        val kdenliveFilePath = "\"${kdenliveFile.absolutePath}\""
+        log.info("kdenliveFilePath: $kdenliveFilePath")
+
+        val videoFilePath = getVideoFilePath(kdenliveFile, targetFolder)
+        log.info("videoFilePath: $videoFilePath")
+
+        val commandOriginal = "melt $kdenliveFilePath " +
+                "-consumer avformat:$videoFilePath " +
+                "vcodec=libx264 b=5000k acodec=aac ab=128k"
+
+        val command = "melt $kdenliveFilePath " +
+                "-consumer avformat:$videoFilePath " +
+                "properties=x264-medium f=mp4 vcodec=libx264 " +
+                "acodec=aac g=120 crf=23 ab=160k preset=faster threads=1 real_time=-1"
+
         log.info("command: $command")
 
         return command
