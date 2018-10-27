@@ -86,7 +86,7 @@ public class MainView extends Application implements MvpView {
         exportAssetsButton.setOnAction(e -> {
             directoryChooser.setTitle("Choose the lesson folder");
             File lessonFolder = directoryChooser.showDialog(primaryStage);
-            presenter.handleExportSlidesButton(lessonFolder);
+            presenter.handleExportAssetsButton(lessonFolder);
         });
         return exportAssetsButton;
     }
