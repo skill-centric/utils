@@ -27,12 +27,14 @@ class TerminalCommandRunner {
 
             val isSuccess = process.waitFor(10, TimeUnit.MINUTES)
 
+            scriptFile.delete()
+
             if (isSuccess) {
                 callback.onSuccess()
-                scriptFile.delete()
             } else {
                 callback.onFailure()
             }
+
 
 //            val status = process.waitFor()
 //            log.info("Process status: $status")

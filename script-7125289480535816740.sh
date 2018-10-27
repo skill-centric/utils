@@ -1,1 +1,0 @@
-melt "/home/zavanton/Desktop/1. Builder Pattern/3. Builder Pattern Example/tmp/Builder Pattern - kdenlive.kdenlive" -consumer avformat:"/home/zavanton/Desktop/1. Builder Pattern/3. Builder Pattern Example/Builder Pattern.mp4" vcodec=libx264 b=5000k acodec=aac ab=128k
